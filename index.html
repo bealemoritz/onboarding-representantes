@@ -625,7 +625,7 @@
     CHECKS._config.guia_url = url;
     setSaveStatus("busy", "salvando...");
     db.collection("config").doc("geral").set({ guia_url: url }, { merge: true })
-      .then(function () { setSavedSoon(); })
+      .then(function () { setSaveStatus("ok", "salvo"); })
       .catch(function (e) {
         console.error("persist failed", e);
         setSaveStatus("err", "erro ao salvar");
