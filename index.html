@@ -27,6 +27,9 @@
     --warn-soft: #F3E7D2;
     --critical: #B14A43;
     --critical-soft: #F7E3E1;
+    --embaixadoras: #84ABAA;
+    --embaixadoras-soft: #E1EBEA;
+    --embaixadoras-ink: #2F4E4D;
     --serif: 'Newsreader', serif;
     --body-font: 'Source Sans 3', system-ui, -apple-system, sans-serif;
     --label-font: 'IBM Plex Mono', ui-monospace, monospace;
@@ -59,20 +62,6 @@
   .sync-status .dot { display:inline-block; width:6px; height:6px; border-radius:50%; background: var(--good); margin-right: 6px; }
   .sync-status .dot.busy { background: var(--warn); }
   .sync-status .dot.err { background: var(--critical); }
-  button.linklike { background: none; border: none; padding: 0; font: inherit; font-family: var(--label-font); font-size: 12.5px; letter-spacing: .04em; text-transform: uppercase; color: var(--time); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
-  details.settings { margin-top: 4px; }
-  details.settings summary { list-style: none; cursor: pointer; }
-  details.settings summary::-webkit-details-marker { display: none; }
-  .settings-panel {
-    margin-top: 10px; background: var(--paper); border: 1px solid var(--rule); border-radius: 6px;
-    padding: 14px 16px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
-  }
-  .settings-panel label { font-family: var(--label-font); font-size: 11.5px; letter-spacing: .03em; color: var(--muted); }
-  .settings-panel input[type=text] {
-    flex: 1; min-width: 220px; background: var(--bg); border: 1px solid var(--rule); border-radius: 4px;
-    padding: 8px 10px; color: var(--ink); font-size: 13.5px; font-family: var(--body-font);
-  }
-  .settings-panel input[type=text]:focus { outline: 2px solid var(--time); outline-offset: 1px; }
   .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 28px; }
   .stat { background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; padding: 16px 18px; }
   .stat .n { font-family: var(--serif); font-weight: 500; font-size: 30px; font-variant-numeric: tabular-nums; line-height: 1.1; color: var(--ink); }
@@ -99,10 +88,22 @@
   .card-name { font-family: var(--accent-font); font-size: 18px; font-weight: 700; color: var(--ink); }
   .badge { font-family: var(--label-font); font-size: 10.5px; font-weight: 500; letter-spacing: .04em; padding: 3px 9px; border-radius: 20px; text-transform: uppercase; }
   .badge.stage { background: var(--representantes); color: var(--representantes-ink); }
+  .badge.stage-venda { background: var(--good-soft); color: var(--good); }
+  .badge.stage-d0 { background: var(--representantes); color: var(--representantes-ink); }
+  .badge.stage-d3 { background: var(--warn-soft); color: var(--warn); }
+  .badge.stage-d7 { background: var(--embaixadoras-soft); color: var(--embaixadoras-ink); }
+  .badge.stage-d14 { background: var(--time-soft); color: var(--time); }
   .badge.overdue { background: var(--critical-soft); color: var(--critical); }
   .badge.sold { background: var(--good-soft); color: var(--good); }
   .badge.nosold { background: var(--warn-soft); color: var(--warn); }
   .badge.flag { background: var(--critical-soft); color: var(--critical); }
+  .badge.done-today { background: var(--good-soft); color: var(--good); }
+  .hoje-section-title {
+    font-family: var(--label-font); font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--muted); margin: 24px 0 12px; padding-top: 4px; border-top: 1px solid var(--rule);
+  }
+  .card.done-today { opacity: 0.82; }
+  .card.done-today .card-name { color: var(--good); }
   .meta-row { font-size: 12.5px; color: var(--muted); display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 12px; }
   .meta-row .mono { color: var(--ink); font-size: 12px; }
   textarea.msg {
@@ -171,14 +172,6 @@
       <div class="brand-eyebrow">Le Moritz · Representantes</div>
       <h1>Onboarding + Ativação</h1>
       <div class="sub">Quem precisa de mensagem hoje, o que mandar, e o histórico de cada representante do dia 0 ao dia 14.</div>
-      <details class="settings">
-        <summary><button class="linklike" type="button" style="pointer-events:none;">Configurar link do guia de boas-vindas</button></summary>
-        <div class="settings-panel">
-          <label for="guia-url">Link do guia (PDF/página):</label>
-          <input type="text" id="guia-url" placeholder="https://..." />
-          <button class="btn-wa" id="save-guia" style="padding:8px 14px;">Salvar</button>
-        </div>
-      </details>
     </div>
     <div class="sync-status" id="sync-status">
       <span><span class="dot" id="save-dot"></span><span id="save-text">carregando...</span></span>
@@ -312,18 +305,13 @@
     return CHECKS[id] || { d0: { enviado: false }, d3: { enviado: false }, d7: { enviado: false }, d14: { enviado: false } };
   }
 
-  function guiaUrl() {
-    return (CHECKS._config && CHECKS._config.guia_url) || "[LINK DO GUIA]";
-  }
-
   function messageFor(stage, rep) {
     var nome = firstName(rep.nome);
     var cupom = rep.cupom || "[SEU CUPOM]";
-    var guia = guiaUrl();
     var sold = rep.vendas && rep.vendas.order_count > 0;
     switch (stage) {
       case "d0":
-        return "Oi " + nome + "! Que alegria ter você com a gente 💜 Você já é oficialmente uma Representante Le Moritz.\n\nGuarda esse guia aqui, ele tem tudo que você precisa saber: " + guia + "\n\nE já vai um combinado pra hoje: escolhe 3 pessoas que você acha que iam gostar da Le Moritz e manda essa mensagem pra elas, seu cupom já é " + cupom + ":\n\n\"Oi, [nome da amiga]! Vi que você se cuida bastante e lembrei de você. Uso uma linha de skincare pensada pra pele madura, indicada por dermatologistas, e separei um desconto especial pra você: é só usar o cupom " + cupom + " no site da Le Moritz. Quer que eu te mande o que mais uso?\"\n\nQualquer dúvida, é só me chamar por aqui.";
+        return "Oi " + nome + "! Que alegria ter você com a gente 💜 Você já é oficialmente uma Representante Le Moritz.\n\nVou te mandar em anexo aqui o guia com tudo que você precisa saber.\n\nE já vai um combinado pra hoje: escolhe 3 pessoas que você acha que iam gostar da Le Moritz e manda essa mensagem pra elas, seu cupom já é " + cupom + ":\n\n\"Oi, [nome da amiga]! Vi que você se cuida bastante e lembrei de você. Uso uma linha de skincare pensada pra pele madura, indicada por dermatologistas, e separei um desconto especial pra você: é só usar o cupom " + cupom + " no site da Le Moritz. Quer que eu te mande o que mais uso?\"\n\nAgora é só entrar no grupo oficial para acompanhar os Desafios, Campanhas e novidades https://chat.whatsapp.com/GokqBSQbTvf2KxNHDcIjfb\nSeja muito bem-vinda ao grupo de Representantes Le Moritz! Qualquer dúvida, é só me chamar por aqui.";
       case "venda":
         return "Oi " + nome + ", vi aqui que rolou sua primeira venda! Parabéns, isso é só o começo 💜\n\nSua primeira venda já desbloqueou seu presente da linha, combinamos os detalhes por aqui.\n\nBora continuar assim?";
       case "d3":
@@ -370,6 +358,30 @@
     return !!(d14 && d14.enviado);
   }
 
+  // "Feito hoje": compara pelo dia local, não pelas últimas 24h — então uma
+  // mensagem marcada às 23h50 sai da lista à meia-noite, junto com a
+  // virada do dia, e não 24h depois.
+  function isToday(iso) {
+    if (!iso) return false;
+    var d = new Date(iso), now = new Date();
+    return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth() && d.getDate() === now.getDate();
+  }
+
+  var ALL_STAGES = ["venda", "d0", "d3", "d7", "d14"];
+
+  // Etapas marcadas como enviadas hoje, pra manter o card visível (com o
+  // check verde) até a virada do dia em vez de sumir na hora — assim dá
+  // pra ver o que já foi feito e evitar marcar sem querer sem perceber.
+  function doneTodayActions(rep) {
+    var checklist = checklistFor(rep.id);
+    var out = [];
+    ALL_STAGES.forEach(function (st) {
+      var entry = checklist[st];
+      if (entry && entry.enviado && isToday(entry.data)) out.push({ stage: st, data: entry.data });
+    });
+    return out;
+  }
+
   function escapeHtml(s) {
     return String(s || "").replace(/[&<>"']/g, function (c) {
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
@@ -380,7 +392,6 @@
     renderStats();
     renderHoje();
     renderTodas();
-    document.getElementById("guia-url").value = guiaUrl() === "[LINK DO GUIA]" ? "" : guiaUrl();
     var when = META.last_synced_at
       ? new Date(META.last_synced_at).toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })
       : null;
@@ -408,6 +419,77 @@
     document.getElementById("tab-count-todas").textContent = reps.length;
   }
 
+  function diasUteis(n) { return n + (n === 1 ? " dia útil" : " dias úteis"); }
+
+  // Monta um card tanto pra pendências (isDone=false) quanto pra mensagens já
+  // marcadas como enviadas hoje (isDone=true) — mesmo layout, mas com a
+  // etiqueta de atraso trocada por um check verde e a caixinha pré-marcada,
+  // pra não sumir da tela e a Bea/Vitória conseguirem ver o que já foi feito.
+  function buildHojeCard(rep, stage, isDone, sentAt) {
+    var card = document.createElement("div");
+    card.className = "card" + (isDone ? " done-today" : "");
+
+    var overdueBy = 0, days = 0;
+    if (!isDone) {
+      var action = nextAction(rep);
+      overdueBy = action.overdueBy;
+      days = action.days;
+    }
+
+    var statusTag;
+    if (isDone) {
+      var hora = sentAt ? new Date(sentAt).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }) : "";
+      statusTag = '<span class="badge done-today">✓ enviada hoje' + (hora ? " · " + hora : "") + '</span>';
+    } else if (stage === "venda") {
+      statusTag = overdueBy > 0
+        ? '<span class="badge overdue">parabéns pendente há ' + diasUteis(overdueBy) + '</span>'
+        : '<span class="badge overdue" style="background:var(--warn-soft);color:var(--warn);">venda de hoje</span>';
+    } else {
+      statusTag = overdueBy > 0
+        ? '<span class="badge overdue">' + diasUteis(overdueBy) + ' de atraso</span>'
+        : '<span class="badge overdue" style="background:var(--warn-soft);color:var(--warn);">vence hoje</span>';
+    }
+
+    var soldTag = rep.vendas && rep.vendas.order_count > 0
+      ? '<span class="badge sold">' + rep.vendas.order_count + " venda" + (rep.vendas.order_count === 1 ? "" : "s") + " · " + fmtMoney(rep.vendas.total_valor_pago) + '</span>'
+      : '<span class="badge nosold">sem venda ainda</span>';
+
+    var cupomFlag = rep.cupom ? "" : '<span class="badge flag">sem cupom cadastrado</span>';
+    var phoneFlag = rep.telefone_valido ? "" : '<span class="badge flag">verificar telefone</span>';
+
+    var msg = messageFor(stage, rep);
+    var link = rep.telefone_valido ? waLink(rep.telefone_digits, msg) : null;
+
+    var dateInfo = stage === "venda"
+      ? "Primeira venda em " + fmtDate(rep.vendas.first_sale_at)
+      : isDone
+        ? "Aprovada em " + fmtDate(rep.approved_at)
+        : "Aprovada em " + fmtDate(rep.approved_at) + " · dia útil " + days + " do funil";
+
+    card.innerHTML =
+      '<div class="card-main">' +
+        '<div class="card-top">' +
+          '<span class="card-name">' + escapeHtml(rep.nome) + '</span>' +
+          '<span class="badge stage stage-' + stage + '">' + STAGE_LABEL[stage] + '</span>' +
+          statusTag + soldTag + cupomFlag + phoneFlag +
+        '</div>' +
+        '<div class="meta-row">' +
+          '<span>@' + escapeHtml(rep.username || "") + '</span>' +
+          '<span class="mono">' + (rep.cupom ? escapeHtml(rep.cupom) : "—") + '</span>' +
+          '<span class="mono">' + maskPhone(rep.telefone_digits) + '</span>' +
+          '<span>' + dateInfo + '</span>' +
+        '</div>' +
+        '<textarea class="msg" data-id="' + rep.id + '" data-stage="' + stage + '">' + msg + '</textarea>' +
+      '</div>' +
+      '<div class="card-actions">' +
+        '<a class="btn-wa" href="' + (link || "#") + '" target="_blank" rel="noopener" aria-disabled="' + (link ? "false" : "true") + '">Abrir no WhatsApp Web</a>' +
+        '<label class="check-row' + (isDone ? " done" : "") + '" data-id="' + rep.id + '" data-stage="' + stage + '">' +
+          '<input type="checkbox"' + (isDone ? " checked" : "") + ' />' + (isDone ? "Enviada · desmarcar" : "Marcar como enviada") +
+        '</label>' +
+      '</div>';
+    return card;
+  }
+
   function renderHoje() {
     var container = document.getElementById("cards-hoje");
     if (container.querySelector("textarea.msg:focus")) return; // don't yank focus mid-edit
@@ -415,63 +497,39 @@
       .filter(function (x) { return x.action; })
       .sort(function (a, b) { return b.action.overdueBy - a.action.overdueBy; });
 
-    if (items.length === 0) {
+    var doneItems = [];
+    ROSTER.forEach(function (r) {
+      doneTodayActions(r).forEach(function (d) { doneItems.push({ rep: r, stage: d.stage, data: d.data }); });
+    });
+    doneItems.sort(function (a, b) { return new Date(b.data) - new Date(a.data); });
+
+    container.innerHTML = "";
+
+    if (items.length === 0 && doneItems.length === 0) {
       container.innerHTML = '<div class="empty-state"><div class="big">✓</div>Ninguém pendente hoje. Tudo em dia!</div>';
       return;
     }
 
-    container.innerHTML = "";
-    items.forEach(function (it) {
-      var rep = it.rep, action = it.action;
-      var card = document.createElement("div");
-      card.className = "card";
+    if (items.length === 0) {
+      var doneOnly = document.createElement("div");
+      doneOnly.className = "empty-state";
+      doneOnly.innerHTML = '<div class="big">✓</div>Tudo pendente resolvido por hoje!';
+      container.appendChild(doneOnly);
+    } else {
+      items.forEach(function (it) {
+        container.appendChild(buildHojeCard(it.rep, it.action.stage, false));
+      });
+    }
 
-      function diasUteis(n) { return n + (n === 1 ? " dia útil" : " dias úteis"); }
-      var overdueTag = action.stage === "venda"
-        ? (action.overdueBy > 0
-            ? '<span class="badge overdue">parabéns pendente há ' + diasUteis(action.overdueBy) + '</span>'
-            : '<span class="badge overdue" style="background:var(--warn-soft);color:var(--warn);">venda de hoje</span>')
-        : (action.overdueBy > 0
-            ? '<span class="badge overdue">' + diasUteis(action.overdueBy) + ' de atraso</span>'
-            : '<span class="badge overdue" style="background:var(--warn-soft);color:var(--warn);">vence hoje</span>');
-
-      var soldTag = rep.vendas && rep.vendas.order_count > 0
-        ? '<span class="badge sold">' + rep.vendas.order_count + " venda" + (rep.vendas.order_count === 1 ? "" : "s") + " · " + fmtMoney(rep.vendas.total_valor_pago) + '</span>'
-        : '<span class="badge nosold">sem venda ainda</span>';
-
-      var cupomFlag = rep.cupom ? "" : '<span class="badge flag">sem cupom cadastrado</span>';
-      var phoneFlag = rep.telefone_valido ? "" : '<span class="badge flag">verificar telefone</span>';
-
-      var msg = messageFor(action.stage, rep);
-      var link = rep.telefone_valido ? waLink(rep.telefone_digits, msg) : null;
-
-      var dateInfo = action.stage === "venda"
-        ? "Primeira venda em " + fmtDate(rep.vendas.first_sale_at)
-        : "Aprovada em " + fmtDate(rep.approved_at) + " · dia útil " + action.days + " do funil";
-
-      card.innerHTML =
-        '<div class="card-main">' +
-          '<div class="card-top">' +
-            '<span class="card-name">' + escapeHtml(rep.nome) + '</span>' +
-            '<span class="badge stage">' + STAGE_LABEL[action.stage] + '</span>' +
-            overdueTag + soldTag + cupomFlag + phoneFlag +
-          '</div>' +
-          '<div class="meta-row">' +
-            '<span>@' + escapeHtml(rep.username || "") + '</span>' +
-            '<span class="mono">' + (rep.cupom ? escapeHtml(rep.cupom) : "—") + '</span>' +
-            '<span class="mono">' + maskPhone(rep.telefone_digits) + '</span>' +
-            '<span>' + dateInfo + '</span>' +
-          '</div>' +
-          '<textarea class="msg" data-id="' + rep.id + '" data-stage="' + action.stage + '">' + msg + '</textarea>' +
-        '</div>' +
-        '<div class="card-actions">' +
-          '<a class="btn-wa" href="' + (link || "#") + '" target="_blank" rel="noopener" aria-disabled="' + (link ? "false" : "true") + '">Abrir no WhatsApp Web</a>' +
-          '<label class="check-row" data-id="' + rep.id + '" data-stage="' + action.stage + '">' +
-            '<input type="checkbox" />Marcar como enviada' +
-          '</label>' +
-        '</div>';
-      container.appendChild(card);
-    });
+    if (doneItems.length) {
+      var heading = document.createElement("div");
+      heading.className = "hoje-section-title";
+      heading.textContent = "Concluídas hoje";
+      container.appendChild(heading);
+      doneItems.forEach(function (d) {
+        container.appendChild(buildHojeCard(d.rep, d.stage, true, d.data));
+      });
+    }
 
     container.querySelectorAll("textarea.msg").forEach(function (ta) {
       ta.addEventListener("input", function () {
@@ -485,6 +543,7 @@
     container.querySelectorAll(".check-row").forEach(function (row) {
       row.addEventListener("change", function (e) {
         if (e.target.checked) markSent(row.dataset.id, row.dataset.stage);
+        else markUnsent(row.dataset.id, row.dataset.stage);
       });
     });
   }
@@ -579,7 +638,7 @@
   }
 
   // ---- persistence: Firestore, coleção "checks" (um doc por representante) ----
-  // e o doc único "config/geral" (guarda só o link do guia). Sem login: as
+  // o doc "config/geral" só guarda a marca de migração já feita. Sem login: as
   // regras do Firestore liberam leitura pra todo mundo e escrita só nos
   // campos d0/d3/d7/d14/venda de cada representante.
 
@@ -588,9 +647,6 @@
       var out = {};
       snap.forEach(function (doc) { out[doc.id] = doc.data(); });
       CHECKS = out;
-      return db.collection("config").doc("geral").get();
-    }).then(function (configDoc) {
-      CHECKS._config = configDoc.exists ? configDoc.data() : {};
     });
   }
 
@@ -618,19 +674,6 @@
     render();
     persistCheck(id, stage, CHECKS[id][stage]);
   }
-  function saveGuiaUrl(url) {
-    CHECKS._config = CHECKS._config || {};
-    CHECKS._config.guia_url = url;
-    setSaveStatus("busy", "salvando...");
-    db.collection("config").doc("geral").set({ guia_url: url }, { merge: true })
-      .then(function () { setSaveStatus("ok", "salvo"); })
-      .catch(function (e) {
-        console.error("persist failed", e);
-        setSaveStatus("err", "erro ao salvar");
-      });
-    if (currentView === "hoje") renderHoje();
-  }
-
   document.querySelectorAll(".tab").forEach(function (t) {
     t.addEventListener("click", function () {
       document.querySelectorAll(".tab").forEach(function (x) { x.classList.remove("active"); });
@@ -642,16 +685,12 @@
   });
   document.getElementById("search-todas").addEventListener("input", renderTodas);
   document.getElementById("toggle-concluidas").addEventListener("change", renderTodas);
-  document.getElementById("save-guia").addEventListener("click", function () {
-    saveGuiaUrl(document.getElementById("guia-url").value.trim());
-  });
 
   // mantém as duas abas (Bea + Vitória) em sincronia em tempo real, sem
   // atropelar quem está no meio de uma edição na caixinha de mensagem
   function applyRemoteChecksUpdate(fn) {
     var ae = document.activeElement;
-    // não atropela quem está editando uma mensagem OU o campo do link do guia
-    if (ae && (ae.tagName === "TEXTAREA" || ae.id === "guia-url")) return;
+    if (ae && ae.tagName === "TEXTAREA") return;
     fn();
     render();
   }
@@ -665,12 +704,6 @@
         });
       });
     }, function (e) { console.error("live sync (checks) failed", e); });
-
-    db.collection("config").doc("geral").onSnapshot(function (doc) {
-      applyRemoteChecksUpdate(function () {
-        CHECKS._config = doc.exists ? doc.data() : {};
-      });
-    }, function (e) { console.error("live sync (config) failed", e); });
   }
 
   runMigrationIfNeeded()
