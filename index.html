@@ -651,7 +651,9 @@
   // mantém as duas abas (Bea + Vitória) em sincronia em tempo real, sem
   // atropelar quem está no meio de uma edição na caixinha de mensagem
   function applyRemoteChecksUpdate(fn) {
-    if (document.activeElement && document.activeElement.tagName === "TEXTAREA") return;
+    var ae = document.activeElement;
+    // não atropela quem está editando uma mensagem OU o campo do link do guia
+    if (ae && (ae.tagName === "TEXTAREA" || ae.id === "guia-url")) return;
     fn();
     render();
   }
