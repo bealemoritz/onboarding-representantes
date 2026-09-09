@@ -4,8 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>Funil de Representantes · Le Moritz</title>
+<title>Onboarding + Ativação · Le Moritz</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <style>
   :root {
     --bg: #FAF6F3;
@@ -169,7 +171,7 @@
   <header>
     <div>
       <div class="brand-eyebrow">Le Moritz · Representantes</div>
-      <h1>Funil de ativação</h1>
+      <h1>Onboarding + Ativação</h1>
       <div class="sub">Quem precisa de mensagem hoje, o que mandar, e o histórico de cada representante do dia 0 ao dia 14.</div>
       <details class="settings">
         <summary><button class="linklike" type="button" style="pointer-events:none;">Configurar link do guia de boas-vindas</button></summary>
@@ -215,7 +217,7 @@
             <th>Cupom</th>
             <th>Dias</th>
             <th>Vendas</th>
-            <th>Etapas (D0 · D3 · D7 · D14)</th>
+            <th>Etapas (Venda · D0 · D3 · D7 · D14)</th>
           </tr>
         </thead>
         <tbody id="table-body"></tbody>
@@ -230,27 +232,35 @@
 </div>
 
 <script type="application/json" id="roster-data">{"representantes":[{"id":"DANIELLA10","nome":"Daniella","username":"daniellamorais2024","cupom":"DANIELLA10","telefone_digits":"31992477670","telefone_valido":true,"approved_at":"2026-09-09T10:27:50.687-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865558+00:00"}},{"id":"KAROLFEITOSA","nome":"Maria","username":"karolfeitosa.atacado","cupom":"KAROLFEITOSA","telefone_digits":"85999721635","telefone_valido":true,"approved_at":"2026-09-09T08:57:26.897-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865602+00:00"}},{"id":"sid_464195","nome":"Danielle","username":"dan.ferraz","cupom":null,"telefone_digits":"11996169700","telefone_valido":true,"approved_at":"2026-09-04T17:26:09.546-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865609+00:00"}},{"id":"ODELITA10","nome":"Odelita","username":"odelitacorrea","cupom":"ODELITA10","telefone_digits":"91982957103","telefone_valido":true,"approved_at":"2026-09-04T16:27:04.861-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865614+00:00"}},{"id":"FLAVIARACHEL10","nome":"FLAVIA RACHEL","username":"lamarao.flavia","cupom":"FLAVIARACHEL10","telefone_digits":"21996968340","telefone_valido":true,"approved_at":"2026-09-03T14:16:52.718-03:00","vendas":{"order_count":2,"first_sale_at":"2026-09-04T14:47:17-03:00","total_valor_pago":1609.2,"synced_at":"2026-09-09T17:23:08.865620+00:00"}},{"id":"LENE10","nome":"ROSILENE","username":"lenefregatti","cupom":"LENE10","telefone_digits":"17997233914","telefone_valido":true,"approved_at":"2026-09-02T15:43:52.909-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865627+00:00"}},{"id":"ROGER10","nome":"Rogéria","username":"roger.albu","cupom":"ROGER10","telefone_digits":"21975248344","telefone_valido":true,"approved_at":"2026-08-25T15:47:41.927-03:00","vendas":{"order_count":1,"first_sale_at":"2026-09-05T06:32:47-03:00","total_valor_pago":315.15,"synced_at":"2026-09-09T17:23:08.865632+00:00"}},{"id":"LUPUPO","nome":"Luciana","username":"spalucianapupo","cupom":"LUPUPO","telefone_digits":"32988285031","telefone_valido":true,"approved_at":"2026-08-25T15:46:30.539-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865638+00:00"}},{"id":"GRAZI10","nome":"Graziella","username":"grazimartinssoeiro","cupom":"GRAZI10","telefone_digits":"94991786965","telefone_valido":true,"approved_at":"2026-08-25T15:44:40.241-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865644+00:00"}},{"id":"PROFDEISE","nome":"Deise","username":"deisepicolotto","cupom":"PROFDEISE","telefone_digits":"53981043366","telefone_valido":true,"approved_at":"2026-08-25T15:41:12.022-03:00","vendas":{"order_count":3,"first_sale_at":"2026-08-31T14:50:56-03:00","total_valor_pago":984.14,"synced_at":"2026-09-09T17:23:08.865648+00:00"}},{"id":"ANARE10","nome":"Ana Regina","username":"anaremartins","cupom":"ANARE10","telefone_digits":"19997720156","telefone_valido":true,"approved_at":"2026-08-19T16:28:46.396-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865656+00:00"}},{"id":"VIVI10","nome":"Viviane","username":"vivianevelosovendas","cupom":"VIVI10","telefone_digits":"63992070426","telefone_valido":true,"approved_at":"2026-08-18T10:02:19.639-03:00","vendas":{"order_count":1,"first_sale_at":"2026-08-23T11:15:16-03:00","total_valor_pago":312.3,"synced_at":"2026-09-09T17:23:08.865661+00:00"}},{"id":"MARIAVERA10","nome":"Maria Vera Lúcia","username":"demariaveralucia","cupom":"MARIAVERA10","telefone_digits":"62982655457","telefone_valido":true,"approved_at":"2026-08-18T09:59:22.501-03:00","vendas":{"order_count":1,"first_sale_at":"2026-08-25T17:23:54-03:00","total_valor_pago":151.91,"synced_at":"2026-09-09T17:23:08.865664+00:00"}},{"id":"ELIZ10","nome":"Maria Elizandra","username":"elizandraportopersonal","cupom":"ELIZ10","telefone_digits":"11994118340","telefone_valido":true,"approved_at":"2026-08-14T17:09:21.521-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865668+00:00"}},{"id":"MANU10","nome":"Manoela","username":"manoelacarvalhaes","cupom":"MANU10","telefone_digits":"31991382244","telefone_valido":true,"approved_at":"2026-08-14T17:06:56.888-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865672+00:00"}},{"id":"ANDREACM10","nome":"Andrea","username":"andrea.medawar","cupom":"ANDREACM10","telefone_digits":"21983421728","telefone_valido":true,"approved_at":"2026-08-14T17:04:19.392-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865678+00:00"}},{"id":"sid_415028","nome":"Ana","username":"anadelgado_oliveira","cupom":null,"telefone_digits":"67999812315","telefone_valido":true,"approved_at":"2026-08-14T17:01:48.901-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865683+00:00"}},{"id":"DRICAANDRADE10","nome":"Adriana","username":"dricaandradeugc","cupom":"DRICAANDRADE10","telefone_digits":"21984703639","telefone_valido":true,"approved_at":"2026-08-14T16:58:24.088-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865687+00:00"}},{"id":"ADRI10","nome":"Adriana Braga de Souza","username":"absbraga5.0","cupom":"ADRI10","telefone_digits":"37379981327","telefone_valido":false,"approved_at":"2026-08-14T10:06:52.779-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865691+00:00"}},{"id":"ROSANE10","nome":"Rosane","username":"espacosdeviver","cupom":"ROSANE10","telefone_digits":"19992709538","telefone_valido":true,"approved_at":"2026-08-14T10:01:27.284-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865695+00:00"}},{"id":"LEFILIPA10","nome":"Neide Filipa","username":"nefilipa.oficial","cupom":"LEFILIPA10","telefone_digits":"11910181179","telefone_valido":true,"approved_at":"2026-08-14T09:56:51.463-03:00","vendas":{"order_count":1,"first_sale_at":"2026-08-17T15:00:41-03:00","total_valor_pago":240.3,"synced_at":"2026-09-09T17:23:08.865701+00:00"}},{"id":"PENANTE10","nome":"Maria Madalena","username":"madalenapenante","cupom":"PENANTE10","telefone_digits":"91983535330","telefone_valido":true,"approved_at":"2026-08-14T09:55:07.059-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865707+00:00"}},{"id":"GENTIL10","nome":"Marcia","username":"marciarozana","cupom":"GENTIL10","telefone_digits":"92985155995","telefone_valido":true,"approved_at":"2026-08-14T09:51:21.199-03:00","vendas":{"order_count":1,"first_sale_at":"2026-08-15T18:41:53-03:00","total_valor_pago":739.58,"synced_at":"2026-09-09T17:23:08.865713+00:00"}},{"id":"MAISA10","nome":"Maisa Paula","username":"eumaisaa.llevindo","cupom":"MAISA10","telefone_digits":"11910141318","telefone_valido":true,"approved_at":"2026-08-14T09:47:18.914-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865717+00:00"}},{"id":"LUCURY10","nome":"Luciene","username":"lucienecury","cupom":"LUCURY10","telefone_digits":"21996127518","telefone_valido":true,"approved_at":"2026-08-14T09:45:42.362-03:00","vendas":{"order_count":1,"first_sale_at":"2026-08-26T00:18:25-03:00","total_valor_pago":99.52,"synced_at":"2026-09-09T17:23:08.865721+00:00"}},{"id":"KERLIA10","nome":"Kerlia","username":"kerlia_cardosomakeup","cupom":"KERLIA10","telefone_digits":"98991221011","telefone_valido":true,"approved_at":"2026-08-14T09:43:07.324-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865724+00:00"}},{"id":"GENYLIBRAS","nome":"Geny","username":"genylibras","cupom":"GENYLIBRAS","telefone_digits":"91981077976","telefone_valido":true,"approved_at":"2026-08-14T09:40:38.658-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865730+00:00"}},{"id":"sid_413030","nome":"Angela","username":"angela.novaes169","cupom":null,"telefone_digits":"77988338685","telefone_valido":true,"approved_at":"2026-08-14T09:38:44.773-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865733+00:00"}},{"id":"MADURA10","nome":"Ana Paula","username":"anapaula.m.silva","cupom":"MADURA10","telefone_digits":"21987312345","telefone_valido":true,"approved_at":"2026-08-14T09:35:37.675-03:00","vendas":{"order_count":1,"first_sale_at":"2026-08-26T18:52:22-03:00","total_valor_pago":168.3,"synced_at":"2026-09-09T17:23:08.865737+00:00"}},{"id":"KELLIGATTI10","nome":"Kelli","username":"kelligatti","cupom":"KELLIGATTI10","telefone_digits":"47996480122","telefone_valido":true,"approved_at":"2026-08-13T10:58:54.412-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865744+00:00"}},{"id":"VEROTA10","nome":"Vera Lúcia","username":"veramotta","cupom":"VEROTA10","telefone_digits":"83998909464","telefone_valido":true,"approved_at":"2026-08-13T08:37:04.51-03:00","vendas":{"order_count":24,"first_sale_at":"2026-08-13T16:40:42-03:00","total_valor_pago":5204.06,"synced_at":"2026-09-09T17:23:08.865749+00:00"}},{"id":"VANESSA10","nome":"Vanessa","username":"vanessa_pedrosaalcantara","cupom":"VANESSA10","telefone_digits":"11949064123","telefone_valido":true,"approved_at":"2026-08-13T08:34:17.11-03:00","vendas":{"order_count":2,"first_sale_at":"2026-08-18T19:30:05-03:00","total_valor_pago":391.54,"synced_at":"2026-09-09T17:23:08.865753+00:00"}},{"id":"TEREZINHA10","nome":"Terezinha","username":"espacotere123","cupom":"TEREZINHA10","telefone_digits":"48999496502","telefone_valido":true,"approved_at":"2026-08-13T08:31:50.466-03:00","vendas":{"order_count":1,"first_sale_at":"2026-09-06T10:57:09-03:00","total_valor_pago":367.31,"synced_at":"2026-09-09T17:23:08.865759+00:00"}},{"id":"SUSANA10","nome":"Susana","username":"susanabarbozaoficial_","cupom":"SUSANA10","telefone_digits":"24999913127","telefone_valido":true,"approved_at":"2026-08-13T08:27:47.295-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865762+00:00"}},{"id":"SOLANGE10","nome":"Solange","username":"solangefialhomassoterapeuta","cupom":"SOLANGE10","telefone_digits":"31994980213","telefone_valido":true,"approved_at":"2026-08-13T08:24:44.104-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865766+00:00"}},{"id":"AVALS10","nome":"Luciane","username":"lugsilv","cupom":"AVALS10","telefone_digits":"41992670607","telefone_valido":true,"approved_at":"2026-08-12T14:32:25.834-03:00","vendas":{"order_count":2,"first_sale_at":"2026-08-13T19:13:53-03:00","total_valor_pago":242.87,"synced_at":"2026-09-09T17:23:08.865770+00:00"}},{"id":"BETEBARROS10","nome":"Elisabete Ferreira","username":"elisabeteferreiracampos","cupom":"BETEBARROS10","telefone_digits":"71981155520","telefone_valido":true,"approved_at":"2026-08-12T13:33:13.44-03:00","vendas":{"order_count":4,"first_sale_at":"2026-08-14T08:50:48-03:00","total_valor_pago":510.32,"synced_at":"2026-09-09T17:23:08.865776+00:00"}},{"id":"ADELAIDE10","nome":"Adelaide","username":"adelaide1501","cupom":"ADELAIDE10","telefone_digits":"11961983565","telefone_valido":true,"approved_at":"2026-08-12T08:08:40.591-03:00","vendas":{"order_count":3,"first_sale_at":"2026-08-24T08:31:27-03:00","total_valor_pago":678.23,"synced_at":"2026-09-09T17:23:08.865781+00:00"}},{"id":"VANINHA56","nome":"Vania","username":"vaniiaaugusto","cupom":"VANINHA56","telefone_digits":"21964277646","telefone_valido":true,"approved_at":"2026-08-11T14:29:51.197-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865785+00:00"}},{"id":"ROZANGELA10","nome":"Rozangela","username":"noletorozangela","cupom":"ROZANGELA10","telefone_digits":"99984042433","telefone_valido":true,"approved_at":"2026-08-11T14:29:11.992-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865791+00:00"}},{"id":"POLIANA10","nome":"Poliana Brilhante","username":"poliana.brilhante","cupom":"POLIANA10","telefone_digits":"61996266185","telefone_valido":true,"approved_at":"2026-08-11T14:28:09.649-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865797+00:00"}},{"id":"PATIFERNANDEZ","nome":"PATRICIA","username":"patriciafernandez99","cupom":"PATIFERNANDEZ","telefone_digits":"11984145127","telefone_valido":true,"approved_at":"2026-08-11T14:25:11.177-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865801+00:00"}},{"id":"PRONTA10","nome":"Monica","username":"pedagogalashmonicaaustin","cupom":"PRONTA10","telefone_digits":"21999799745","telefone_valido":true,"approved_at":"2026-08-11T14:21:24.885-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865806+00:00"}},{"id":"LUCILEIA","nome":"Luciléia","username":"lucileialealoliva","cupom":"LUCILEIA","telefone_digits":"38999439090","telefone_valido":true,"approved_at":"2026-08-11T14:18:00.148-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865813+00:00"}},{"id":"LUCIARIBEIRO10","nome":"Lucia","username":"promosdalu2661","cupom":"LUCIARIBEIRO10","telefone_digits":"19996942550","telefone_valido":true,"approved_at":"2026-08-11T14:17:15.483-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865817+00:00"}},{"id":"ELIANE10","nome":"Eliane","username":"pontes.elianee","cupom":"ELIANE10","telefone_digits":"77988281551","telefone_valido":true,"approved_at":"2026-08-11T14:15:42.163-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865821+00:00"}},{"id":"EDITH10","nome":"Edite","username":"editesousaatriz","cupom":"EDITH10","telefone_digits":"85981265688","telefone_valido":true,"approved_at":"2026-08-11T14:09:18.133-03:00","vendas":{"order_count":2,"first_sale_at":"2026-08-28T22:52:48-03:00","total_valor_pago":663.05,"synced_at":"2026-09-09T17:23:08.865824+00:00"}},{"id":"BRUNAINSPIRA","nome":"Bruna","username":"brurosasouza","cupom":"BRUNAINSPIRA","telefone_digits":"48996359833","telefone_valido":true,"approved_at":"2026-08-11T13:39:55.704-03:00","vendas":{"order_count":1,"first_sale_at":"2026-08-31T13:55:00-03:00","total_valor_pago":264.6,"synced_at":"2026-09-09T17:23:08.865830+00:00"}},{"id":"FILO10","nome":"Regina","username":"reginafbonomini","cupom":"FILO10","telefone_digits":"67996145644","telefone_valido":true,"approved_at":"2026-08-11T10:39:02.095-03:00","vendas":{"order_count":1,"first_sale_at":"2026-09-02T10:56:48-03:00","total_valor_pago":502.2,"synced_at":"2026-09-09T17:23:08.865834+00:00"}},{"id":"SIMONE10","nome":"Simone","username":"symoneramosemagrecimento","cupom":"SIMONE10","telefone_digits":"21981009708","telefone_valido":true,"approved_at":"2026-08-10T13:47:12.751-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865837+00:00"}},{"id":"SANDRAB10","nome":"Sandra","username":"sandralbsardinha","cupom":"SANDRAB10","telefone_digits":"11991846159","telefone_valido":true,"approved_at":"2026-08-10T13:44:36.144-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865843+00:00"}},{"id":"DANUTRI","nome":"MÔNICA","username":"monicanutri.ovidio","cupom":"DANUTRI","telefone_digits":"65984420204","telefone_valido":true,"approved_at":"2026-08-10T13:40:53.552-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865847+00:00"}},{"id":"PATTY","nome":"Patricia","username":"patriciasilenegarcia","cupom":"PATTY","telefone_digits":"14996903614","telefone_valido":true,"approved_at":"2026-08-10T13:34:34.234-03:00","vendas":{"order_count":1,"first_sale_at":"2026-09-08T13:56:49-03:00","total_valor_pago":250.55,"synced_at":"2026-09-09T17:23:08.865850+00:00"}},{"id":"MARCIA10","nome":"Maria Marcia","username":"studiomarciaferrazzo","cupom":"MARCIA10","telefone_digits":"65998440504","telefone_valido":true,"approved_at":"2026-08-10T13:31:12.691-03:00","vendas":{"order_count":1,"first_sale_at":"2026-09-05T19:56:17-03:00","total_valor_pago":215.63,"synced_at":"2026-09-09T17:23:08.865857+00:00"}},{"id":"MARCELA10","nome":"Marcela","username":"marcelagnavarrete","cupom":"MARCELA10","telefone_digits":"67984040655","telefone_valido":true,"approved_at":"2026-08-10T13:26:07.985-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865861+00:00"}},{"id":"LUIZA10","nome":"Luiza","username":"luizalouroestetica","cupom":"LUIZA10","telefone_digits":"53991595777","telefone_valido":true,"approved_at":"2026-08-10T13:24:00.622-03:00","vendas":{"order_count":7,"first_sale_at":"2026-08-12T18:51:15-03:00","total_valor_pago":1492.43,"synced_at":"2026-09-09T17:23:08.865865+00:00"}},{"id":"FILIPPSEN","nome":"Luana","username":"luanagfilippsen","cupom":"FILIPPSEN","telefone_digits":"62992005692","telefone_valido":true,"approved_at":"2026-08-10T13:22:43.682-03:00","vendas":{"order_count":1,"first_sale_at":"2026-08-22T13:49:26-03:00","total_valor_pago":151.34,"synced_at":"2026-09-09T17:23:08.865868+00:00"}},{"id":"VALENTIM10","nome":"JOSIANE","username":"josianevalentimbeauty","cupom":"VALENTIM10","telefone_digits":"24999042936","telefone_valido":true,"approved_at":"2026-08-10T13:21:18.976-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865872+00:00"}},{"id":"JESAH10","nome":"Jesah","username":"jesahfisio","cupom":"JESAH10","telefone_digits":"88996505801","telefone_valido":true,"approved_at":"2026-08-10T13:19:41.585-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865880+00:00"}},{"id":"ANANOVO10","nome":"Ana Lucia","username":"analucianovo","cupom":"ANANOVO10","telefone_digits":"21991613229","telefone_valido":true,"approved_at":"2026-08-10T13:16:17.941-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865886+00:00"}},{"id":"ELLAS10","nome":"Janaina","username":"janainasoutooficial","cupom":"ELLAS10","telefone_digits":"21985375154","telefone_valido":true,"approved_at":"2026-08-10T13:14:40.861-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865889+00:00"}},{"id":"JACI10","nome":"Jaciara","username":"jlamis.semijoias","cupom":"JACI10","telefone_digits":"71988810283","telefone_valido":true,"approved_at":"2026-08-10T11:49:55.531-03:00","vendas":{"order_count":5,"first_sale_at":"2026-08-13T23:14:39-03:00","total_valor_pago":1266.21,"synced_at":"2026-09-09T17:23:08.865893+00:00"}},{"id":"ISOLDA10","nome":"Isolda","username":"isolda.monteiro_","cupom":"ISOLDA10","telefone_digits":"86994297147","telefone_valido":true,"approved_at":"2026-08-10T11:48:02.531-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865897+00:00"}},{"id":"FABISCHMITT","nome":"Girlei Fabiane Schmitt da","username":"fabischmitt_","cupom":"FABISCHMITT","telefone_digits":"51998892981","telefone_valido":true,"approved_at":"2026-08-10T11:46:24.67-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865902+00:00"}},{"id":"EDINA10","nome":"Edina Alves Carvalho Fuchs","username":"edinafuchsobrancelhas","cupom":"EDINA10","telefone_digits":"15997937963","telefone_valido":true,"approved_at":"2026-08-10T11:44:40.44-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865906+00:00"}},{"id":"DEOLLIVEIRA10","nome":"Debora","username":"deborasfopsicopedagoga","cupom":"DEOLLIVEIRA10","telefone_digits":"11982218120","telefone_valido":true,"approved_at":"2026-08-10T11:43:10.701-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865912+00:00"}},{"id":"CACA10","nome":"Cássia","username":"cassiaamaraloficial","cupom":"CACA10","telefone_digits":"21981960000","telefone_valido":true,"approved_at":"2026-08-10T11:40:51.07-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865915+00:00"}},{"id":"CIRLENE10","nome":"Cirlene conceicao","username":"cirlenesouzarosa","cupom":"CIRLENE10","telefone_digits":"65999557440","telefone_valido":true,"approved_at":"2026-08-10T11:11:33.016-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865919+00:00"}},{"id":"KIKA10","nome":"Eliane Kaoru","username":"kika.maki","cupom":"KIKA10","telefone_digits":"11991742280","telefone_valido":true,"approved_at":"2026-08-10T10:43:15.738-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865923+00:00"}},{"id":"SANDRA10","nome":"Sandra Helena","username":"sandradasmerces","cupom":"SANDRA10","telefone_digits":"38991756123","telefone_valido":true,"approved_at":"2026-08-10T09:11:15.772-03:00","vendas":{"order_count":12,"first_sale_at":"2026-08-30T10:54:53-03:00","total_valor_pago":2747.51,"synced_at":"2026-09-09T17:23:08.865928+00:00"}},{"id":"ROZANGELA53","nome":"Rozangela","username":"rozangelasantoscarvalho","cupom":"ROZANGELA53","telefone_digits":"11966381160","telefone_valido":true,"approved_at":"2026-08-10T08:54:04.316-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865932+00:00"}},{"id":"ROSICLEIDE","nome":"Rosicleide","username":"rosicleidehanna","cupom":"ROSICLEIDE","telefone_digits":"99992305876","telefone_valido":true,"approved_at":"2026-08-10T08:52:14.809-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865936+00:00"}},{"id":"ANDREIADEPAULA","nome":"Andreia","username":"andreiadepaula2510","cupom":"ANDREIADEPAULA","telefone_digits":"62981268868","telefone_valido":true,"approved_at":"2026-08-10T08:50:12.181-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865957+00:00"}},{"id":"CELIA10","nome":"Gilcelia","username":"macedo.celia","cupom":"CELIA10","telefone_digits":"22974057632","telefone_valido":true,"approved_at":"2026-08-10T08:47:58.499-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865961+00:00"}},{"id":"LUASSAD10","nome":"Lúcia","username":"blogueirinha_aos60","cupom":"LUASSAD10","telefone_digits":"21996369454","telefone_valido":true,"approved_at":"2026-08-10T08:45:55.832-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865967+00:00"}},{"id":"CLICIA10","nome":"Clicia","username":"cliciamesquita","cupom":"CLICIA10","telefone_digits":"22997952934","telefone_valido":true,"approved_at":"2026-08-10T08:35:21.248-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865971+00:00"}},{"id":"MARI10","nome":"Marileia","username":"maricooelhooficial","cupom":"MARI10","telefone_digits":"47997300231","telefone_valido":true,"approved_at":"2026-08-07T18:47:09.394-03:00","vendas":{"order_count":1,"first_sale_at":"2026-08-24T12:35:37-03:00","total_valor_pago":159.89,"synced_at":"2026-09-09T17:23:08.865974+00:00"}},{"id":"LAUDI10","nome":"Laudiceia","username":"laurodriguesoficial","cupom":"LAUDI10","telefone_digits":"11940000053","telefone_valido":true,"approved_at":"2026-08-07T18:42:01.465-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865978+00:00"}},{"id":"KARINA10","nome":"Karina","username":"karina.m.martins","cupom":"KARINA10","telefone_digits":"62984382038","telefone_valido":true,"approved_at":"2026-08-07T18:40:01.828-03:00","vendas":{"order_count":3,"first_sale_at":"2026-08-21T16:15:55-03:00","total_valor_pago":606.63,"synced_at":"2026-09-09T17:23:08.865984+00:00"}},{"id":"LUCARDOSO10","nome":"Luciane Cristina","username":"luciane.cardoso74","cupom":"LUCARDOSO10","telefone_digits":"15991774482","telefone_valido":true,"approved_at":"2026-08-07T18:30:44.408-03:00","vendas":{"order_count":2,"first_sale_at":"2026-08-10T17:35:49-03:00","total_valor_pago":855.09,"synced_at":"2026-09-09T17:23:08.865992+00:00"}},{"id":"MARYDICAS","nome":"Mary","username":"maryhenriquede","cupom":"MARYDICAS","telefone_digits":"31996413065","telefone_valido":true,"approved_at":"2026-08-07T18:26:57.81-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.865996+00:00"}},{"id":"ROMFIM","nome":"Marlucia","username":"romfimmarlucia","cupom":"ROMFIM","telefone_digits":"69984472739","telefone_valido":true,"approved_at":"2026-08-07T18:23:42.522-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.866000+00:00"}},{"id":"MARIAILHA","nome":"Maria Aparecida Ferreira costa","username":"maria2012.ilha","cupom":"MARIAILHA","telefone_digits":"12996558977","telefone_valido":true,"approved_at":"2026-08-07T18:21:47.944-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.866006+00:00"}},{"id":"DRIKA10","nome":"Adriana","username":"adrianamottabeauty","cupom":"DRIKA10","telefone_digits":"11915386627","telefone_valido":true,"approved_at":"2026-08-07T18:19:43.3-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.866009+00:00"}},{"id":"ANATORRES10","nome":"Anna","username":"ananicktorres","cupom":"ANATORRES10","telefone_digits":"98981437004","telefone_valido":true,"approved_at":"2026-08-07T18:16:49.283-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.866016+00:00"}},{"id":"ANDREIA10","nome":"Andreia","username":"andreiagenesi","cupom":"ANDREIA10","telefone_digits":"11986823980","telefone_valido":true,"approved_at":"2026-08-07T18:13:58.245-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.866020+00:00"}},{"id":"ELLISVIP","nome":"Ellis","username":"ellisblanco","cupom":"ELLISVIP","telefone_digits":"21969099090","telefone_valido":true,"approved_at":"2026-08-07T18:08:15.307-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.866029+00:00"}},{"id":"NEIDE10","nome":"ENEIDES","username":"eneides_sampaio","cupom":"NEIDE10","telefone_digits":"86995214658","telefone_valido":true,"approved_at":"2026-08-07T18:05:14.993-03:00","vendas":{"order_count":1,"first_sale_at":"2026-08-19T20:14:10-03:00","total_valor_pago":197.51,"synced_at":"2026-09-09T17:23:08.866033+00:00"}},{"id":"GERMANA10","nome":"Germana","username":"germana_santana","cupom":"GERMANA10","telefone_digits":"83999705565","telefone_valido":true,"approved_at":"2026-08-07T18:02:54.679-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.866037+00:00"}},{"id":"BELEZA10","nome":"Claudia","username":"claudiaalmeidacorretora","cupom":"BELEZA10","telefone_digits":"11947323129","telefone_valido":true,"approved_at":"2026-08-07T17:57:58.127-03:00","vendas":{"order_count":1,"first_sale_at":"2026-08-16T04:42:40-03:00","total_valor_pago":189.81,"synced_at":"2026-09-09T17:23:08.866041+00:00"}},{"id":"CLAU10","nome":"Cláudia","username":"clau7_715","cupom":"CLAU10","telefone_digits":"67998406188","telefone_valido":true,"approved_at":"2026-08-07T17:49:59.846-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.866047+00:00"}},{"id":"DALSOUZA10","nome":"Dalcilene","username":"oaltardosim","cupom":"DALSOUZA10","telefone_digits":"21970173914","telefone_valido":true,"approved_at":"2026-08-07T17:45:28.878-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.866050+00:00"}},{"id":"DANY40","nome":"Daniela","username":"danyravila","cupom":"DANY40","telefone_digits":"31991882777","telefone_valido":true,"approved_at":"2026-08-07T17:32:25.356-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.866054+00:00"}},{"id":"DEBY10","nome":"Deborah","username":"debyvintecinco","cupom":"DEBY10","telefone_digits":"11947010136","telefone_valido":true,"approved_at":"2026-08-07T17:29:34.756-03:00","vendas":{"order_count":2,"first_sale_at":"2026-08-23T12:58:09-03:00","total_valor_pago":394.2,"synced_at":"2026-09-09T17:23:08.866060+00:00"}},{"id":"ELO07","nome":"Elosia santos da silva martinez","username":"elosiamartinez","cupom":"ELO07","telefone_digits":"65996231565","telefone_valido":true,"approved_at":"2026-08-07T17:08:39.519-03:00","vendas":{"order_count":4,"first_sale_at":"2026-08-17T10:00:07-03:00","total_valor_pago":551.58,"synced_at":"2026-09-09T17:23:08.866064+00:00"}},{"id":"BIANA10","nome":"Fabiana","username":"afabi.zinha","cupom":"BIANA10","telefone_digits":"21997745097","telefone_valido":true,"approved_at":"2026-08-07T17:06:32.056-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.866070+00:00"}},{"id":"FLAVIA10","nome":"Flávia","username":"byflavialves","cupom":"FLAVIA10","telefone_digits":"61991519190","telefone_valido":true,"approved_at":"2026-08-07T16:40:02.705-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.866073+00:00"}},{"id":"FER10","nome":"Fernanda","username":"fer_nandamorais","cupom":"FER10","telefone_digits":"24998549391","telefone_valido":true,"approved_at":"2026-08-07T16:31:02.601-03:00","vendas":{"order_count":1,"first_sale_at":"2026-08-25T17:13:05-03:00","total_valor_pago":78.3,"synced_at":"2026-09-09T17:23:08.866077+00:00"}},{"id":"LUVERAS","nome":"Luciana","username":"lucianapugliesigouveia","cupom":"LUVERAS","telefone_digits":"41995619146","telefone_valido":true,"approved_at":"2026-08-06T19:50:24.378-03:00","vendas":{"order_count":1,"first_sale_at":"2026-08-22T12:16:27-03:00","total_valor_pago":151.11,"synced_at":"2026-09-09T17:23:08.866083+00:00"}},{"id":"VIKA","nome":"Virginia","username":"virginia_vikarodrigues","cupom":"VIKA","telefone_digits":"51998779494","telefone_valido":true,"approved_at":"2026-08-06T19:26:34.088-03:00","vendas":{"order_count":36,"first_sale_at":"2026-08-08T09:07:00-03:00","total_valor_pago":8711.57,"synced_at":"2026-09-09T17:23:08.866086+00:00"}},{"id":"ROBERTA10","nome":"ROBERTA","username":"lisoexpert.oficial","cupom":"ROBERTA10","telefone_digits":"21991020485","telefone_valido":true,"approved_at":"2026-08-06T18:56:44.579-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.866094+00:00"}},{"id":"LUCIA10","nome":"Lucia Helena","username":"lucia_helena_martinez","cupom":"LUCIA10","telefone_digits":"21998865006","telefone_valido":true,"approved_at":"2026-08-06T16:59:19.15-03:00","vendas":{"order_count":34,"first_sale_at":"2026-08-06T21:05:09-03:00","total_valor_pago":7825.55,"synced_at":"2026-09-09T17:23:08.866103+00:00"}},{"id":"ELIZA10","nome":"Eliza","username":"maximoeliza","cupom":"ELIZA10","telefone_digits":"21988885627","telefone_valido":true,"approved_at":"2026-08-06T16:52:38.327-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.866107+00:00"}},{"id":"ANNALU_10","nome":"Anna Lucia","username":"annalucia","cupom":"ANNALU 10","telefone_digits":"21981012900","telefone_valido":true,"approved_at":"2026-08-06T16:52:15.309-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.866113+00:00"}},{"id":"MALU10","nome":"Maria luiza","username":"malu.adami","cupom":"MALU10","telefone_digits":"21983247971","telefone_valido":true,"approved_at":"2026-08-06T16:23:53.643-03:00","vendas":{"order_count":53,"first_sale_at":"2026-08-08T10:54:34-03:00","total_valor_pago":13950.41,"synced_at":"2026-09-09T17:23:08.866116+00:00"}},{"id":"GAUGER10","nome":"Marcia","username":"gauger.marcia","cupom":"GAUGER10","telefone_digits":"95981000052","telefone_valido":true,"approved_at":"2026-08-06T16:23:25.26-03:00","vendas":{"order_count":3,"first_sale_at":"2026-08-08T14:35:57-03:00","total_valor_pago":644.74,"synced_at":"2026-09-09T17:23:08.866120+00:00"}},{"id":"CELI10","nome":"Celineia","username":"celyschneider","cupom":"CELI10","telefone_digits":"69993758919","telefone_valido":true,"approved_at":"2026-08-06T15:59:09.192-03:00","vendas":{"order_count":1,"first_sale_at":"2026-09-03T11:58:58-03:00","total_valor_pago":410.4,"synced_at":"2026-09-09T17:23:08.866126+00:00"}},{"id":"HELO10","nome":"Heloisa","username":"helomotta","cupom":"HELO10","telefone_digits":"32999680633","telefone_valido":true,"approved_at":"2026-08-06T15:55:01.627-03:00","vendas":{"order_count":1,"first_sale_at":"2026-09-01T12:35:23-03:00","total_valor_pago":288.26,"synced_at":"2026-09-09T17:23:08.866131+00:00"}},{"id":"BEAMIELKE","nome":"Beatriz Alice","username":"beamielke","cupom":"BEAMIELKE","telefone_digits":"48999003737","telefone_valido":true,"approved_at":"2026-08-05T14:54:06.745-03:00","vendas":{"order_count":0,"first_sale_at":null,"total_valor_pago":0,"synced_at":"2026-09-09T17:23:08.866135+00:00"}}],"meta":{"last_synced_at":"2026-09-09T00:00:00-03:00","total_representantes":109}}</script>
+<script type="application/json" id="checks-seed-data">{"DANIELLA10":{"d0":{"enviado":false,"data":null,"auto":false},"d3":{"enviado":false,"data":null,"auto":false},"d7":{"enviado":false,"data":null,"auto":false},"d14":{"enviado":false,"data":null,"auto":false}},"KAROLFEITOSA":{"d0":{"enviado":false,"data":null,"auto":false},"d3":{"enviado":false,"data":null,"auto":false},"d7":{"enviado":false,"data":null,"auto":false},"d14":{"enviado":false,"data":null,"auto":false}},"sid_464195":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":false,"data":null,"auto":false},"d14":{"enviado":false,"data":null,"auto":false}},"ODELITA10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":false,"data":null,"auto":false},"d14":{"enviado":false,"data":null,"auto":false}},"FLAVIARACHEL10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":false,"data":null,"auto":false},"d14":{"enviado":false,"data":null,"auto":false}},"LENE10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":false,"data":null,"auto":false},"d14":{"enviado":false,"data":null,"auto":false}},"ROGER10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"LUPUPO":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"GRAZI10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"PROFDEISE":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"ANARE10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"VIVI10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"MARIAVERA10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"ELIZ10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"MANU10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"ANDREACM10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"sid_415028":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"DRICAANDRADE10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"ADRI10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"ROSANE10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"LEFILIPA10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"PENANTE10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"GENTIL10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"MAISA10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"LUCURY10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"KERLIA10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"GENYLIBRAS":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"sid_413030":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"MADURA10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"KELLIGATTI10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"VEROTA10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"VANESSA10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"TEREZINHA10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"SUSANA10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"SOLANGE10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"AVALS10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"BETEBARROS10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"ADELAIDE10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"VANINHA56":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"ROZANGELA10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"POLIANA10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"PATIFERNANDEZ":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"PRONTA10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"LUCILEIA":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"LUCIARIBEIRO10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"ELIANE10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"EDITH10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"BRUNAINSPIRA":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"FILO10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"SIMONE10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"SANDRAB10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"DANUTRI":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"PATTY":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"MARCIA10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"MARCELA10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"LUIZA10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"FILIPPSEN":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"VALENTIM10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"JESAH10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"ANANOVO10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"ELLAS10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"JACI10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"ISOLDA10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"FABISCHMITT":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"EDINA10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"DEOLLIVEIRA10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"CACA10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"CIRLENE10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"KIKA10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"SANDRA10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"ROZANGELA53":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"ROSICLEIDE":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"ANDREIADEPAULA":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"CELIA10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"LUASSAD10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"CLICIA10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"MARI10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"LAUDI10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"KARINA10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"LUCARDOSO10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"MARYDICAS":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"ROMFIM":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"MARIAILHA":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"DRIKA10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"ANATORRES10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"ANDREIA10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"ELLISVIP":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"NEIDE10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"GERMANA10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"BELEZA10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"CLAU10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"DALSOUZA10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"DANY40":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"DEBY10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"ELO07":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"BIANA10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"FLAVIA10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"FER10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"LUVERAS":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"VIKA":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"ROBERTA10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"LUCIA10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"ELIZA10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"ANNALU_10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"MALU10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"GAUGER10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"CELI10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"HELO10":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"BEAMIELKE":{"d0":{"enviado":true,"data":null,"auto":true},"d3":{"enviado":true,"data":null,"auto":true},"d7":{"enviado":true,"data":null,"auto":true},"d14":{"enviado":true,"data":null,"auto":true}},"_config":{"guia_url":""}}
+</script>
 <script>
 (function () {
   "use strict";
 
   // ---- config: where this page writes the "enviado" checkbox state ----
-  var GH_OWNER = "bealemoritz";
-  var GH_REPO = "onboarding-representantes";
-  var GH_TOKEN = "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"; // fine-grained PAT, scoped ONLY to this repo, ONLY "Contents: Read and write"
-  var CHECKS_PATH = "checks.json";
-  var GH_API = "https://api.github.com/repos/" + GH_OWNER + "/" + GH_REPO + "/contents/" + CHECKS_PATH;
+  // Persistência via Firebase Firestore (chave de app pública por design — a
+  // segurança é garantida pelas regras do Firestore, não pelo sigilo da chave).
+  var firebaseConfig = {
+    apiKey: "AIzaSyASDJr1aj_puvsOeIPoLQTgabSq4nrclJw",
+    authDomain: "onboarding-representantes.firebaseapp.com",
+    projectId: "onboarding-representantes",
+    storageBucket: "onboarding-representantes.firebasestorage.app",
+    messagingSenderId: "581284635115",
+    appId: "1:581284635115:web:e66e42888ee05411d9b9ae"
+  };
+  firebase.initializeApp(firebaseConfig);
+  var db = firebase.firestore();
 
   var STAGES = ["d0", "d3", "d7", "d14"];
   var THRESH = { d0: 0, d3: 3, d7: 7, d14: 14 };
-  var STAGE_LABEL = { d0: "Dia 0 · Boas-vindas", d3: "Dia 3 · Reforço", d7: "Dia 7 · Check-in", d14: "Dia 14 · Segunda venda ou contato" };
+  var STAGE_LABEL = { venda: "Parabéns · Primeira venda", d0: "Dia 0 · Boas-vindas", d3: "Dia 3 · Reforço", d7: "Dia 7 · Check-in", d14: "Dia 14 · Segunda venda ou contato" };
 
   var ROSTER_DATA = JSON.parse(document.getElementById("roster-data").textContent);
   var ROSTER = ROSTER_DATA.representantes || [];
   var META = ROSTER_DATA.meta || {};
 
   var CHECKS = {};       // { repId: {d0:{enviado,data,auto}, ...}, _config: {guia_url} }
-  var checksSha = null;  // sha of checks.json on GitHub, needed to write
   var currentView = "hoje";
   var saving = false;
 
@@ -261,6 +271,26 @@
     var a = Date.UTC(then.getFullYear(), then.getMonth(), then.getDate());
     var b = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
     return Math.round((b - a) / 86400000);
+  }
+
+  // Dias úteis (sem contar sábado/domingo) — é isso que decide quando uma
+  // etapa vence e o quanto ela está atrasada, pra fim de semana nunca
+  // "empurrar" nada: o que não foi marcado na sexta segue do mesmo jeito
+  // na segunda, sem pular etapa nem contar dois dias de atraso à toa.
+  function bizDaysSince(iso) {
+    if (!iso) return 0;
+    var then = new Date(iso), now = new Date();
+    var a = new Date(Date.UTC(then.getFullYear(), then.getMonth(), then.getDate()));
+    var b = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
+    if (b <= a) return 0;
+    var count = 0;
+    var cur = new Date(a.getTime());
+    while (cur < b) {
+      cur.setUTCDate(cur.getUTCDate() + 1);
+      var dow = cur.getUTCDay(); // 0 = domingo, 6 = sábado
+      if (dow !== 0 && dow !== 6) count++;
+    }
+    return count;
   }
 
   function fmtDate(iso) {
@@ -296,12 +326,11 @@
     switch (stage) {
       case "d0":
         return "Oi " + nome + "! Que alegria ter você com a gente 💜 Você já é oficialmente uma Representante Le Moritz.\n\nGuarda esse guia aqui, ele tem tudo que você precisa saber: " + guia + "\n\nE já vai um combinado pra hoje: escolhe 3 pessoas que você acha que iam gostar da Le Moritz e manda essa mensagem pra elas, seu cupom já é " + cupom + ":\n\n\"Oi, [nome da amiga]! Vi que você se cuida bastante e lembrei de você. Uso uma linha de skincare pensada pra pele madura, indicada por dermatologistas, e separei um desconto especial pra você: é só usar o cupom " + cupom + " no site da Le Moritz. Quer que eu te mande o que mais uso?\"\n\nQualquer dúvida, é só me chamar por aqui.";
+      case "venda":
+        return "Oi " + nome + ", vi aqui que rolou sua primeira venda! Parabéns, isso é só o começo 💜\n\nSua primeira venda já desbloqueou seu presente da linha, combinamos os detalhes por aqui.\n\nBora continuar assim?";
       case "d3":
         return "Oi " + nome + ", passando pra saber como você está.\n\nJá conseguiu falar com as 3 pessoas que combinamos? Se travou em algum ponto ou não sabe o que mandar, me chama que te ajudo com a mensagem certinha.\n\nSeu cupom é " + cupom + ", lembra sempre de reforçar pra não esquecerem de usar antes de fechar a compra.";
       case "d7":
-        if (sold) {
-          return "Oi " + nome + ", vi aqui que rolou sua primeira venda! Parabéns, isso é só o começo 💜\n\nSua primeira venda já desbloqueou seu presente da linha, combinamos os detalhes por aqui.\n\nBora continuar assim?";
-        }
         return "Oi " + nome + ", passando só pra lembrar que é super normal a primeira venda demorar um pouco. Pra maior parte das representantes, isso leva de uma a duas semanas, e está tudo certo.\n\nPrecisa de uma força com o que mandar pra alguém, ou quer que eu te dê uma ideia de quem abordar?";
       case "d14":
         if (sold) {
@@ -313,14 +342,25 @@
   }
 
   function nextAction(rep) {
-    var days = daysSince(rep.approved_at);
     var sold = rep.vendas && rep.vendas.order_count > 0;
     var checklist = checklistFor(rep.id);
+
+    // A primeira venda tem prioridade sobre qualquer outra etapa: assim que
+    // detectamos que ela vendeu, o parabéns entra na frente do D0-D14,
+    // não importa em que dia do funil ela esteja.
+    var vendaEntry = checklist.venda || { enviado: false };
+    if (sold && !vendaEntry.enviado) {
+      var vendaDays = bizDaysSince(rep.vendas.first_sale_at) || 0;
+      return { stage: "venda", days: vendaDays, overdueBy: vendaDays };
+    }
+
+    var days = bizDaysSince(rep.approved_at);
     for (var i = 0; i < STAGES.length; i++) {
       var st = STAGES[i];
       var entry = checklist[st] || { enviado: false };
       if (entry.enviado) continue;
       if (st === "d3" && sold) continue;
+      if (st === "d7" && sold) continue; // já recebeu o parabéns da venda, D7 não se aplica
       if (days >= THRESH[st]) return { stage: st, days: days, overdueBy: days - THRESH[st] };
       break;
     }
@@ -388,9 +428,14 @@
       var card = document.createElement("div");
       card.className = "card";
 
-      var overdueTag = action.overdueBy > 0
-        ? '<span class="badge overdue">' + action.overdueBy + " dia" + (action.overdueBy === 1 ? "" : "s") + ' atrasada</span>'
-        : '<span class="badge overdue" style="background:var(--warn-soft);color:var(--warn);">vence hoje</span>';
+      function diasUteis(n) { return n + (n === 1 ? " dia útil" : " dias úteis"); }
+      var overdueTag = action.stage === "venda"
+        ? (action.overdueBy > 0
+            ? '<span class="badge overdue">parabéns pendente há ' + diasUteis(action.overdueBy) + '</span>'
+            : '<span class="badge overdue" style="background:var(--warn-soft);color:var(--warn);">venda de hoje</span>')
+        : (action.overdueBy > 0
+            ? '<span class="badge overdue">' + diasUteis(action.overdueBy) + ' de atraso</span>'
+            : '<span class="badge overdue" style="background:var(--warn-soft);color:var(--warn);">vence hoje</span>');
 
       var soldTag = rep.vendas && rep.vendas.order_count > 0
         ? '<span class="badge sold">' + rep.vendas.order_count + " venda" + (rep.vendas.order_count === 1 ? "" : "s") + " · " + fmtMoney(rep.vendas.total_valor_pago) + '</span>'
@@ -401,6 +446,10 @@
 
       var msg = messageFor(action.stage, rep);
       var link = rep.telefone_valido ? waLink(rep.telefone_digits, msg) : null;
+
+      var dateInfo = action.stage === "venda"
+        ? "Primeira venda em " + fmtDate(rep.vendas.first_sale_at)
+        : "Aprovada em " + fmtDate(rep.approved_at) + " · dia útil " + action.days + " do funil";
 
       card.innerHTML =
         '<div class="card-main">' +
@@ -413,7 +462,7 @@
             '<span>@' + escapeHtml(rep.username || "") + '</span>' +
             '<span class="mono">' + (rep.cupom ? escapeHtml(rep.cupom) : "—") + '</span>' +
             '<span class="mono">' + maskPhone(rep.telefone_digits) + '</span>' +
-            '<span>Aprovada em ' + fmtDate(rep.approved_at) + ' · dia ' + action.days + ' do funil</span>' +
+            '<span>' + dateInfo + '</span>' +
           '</div>' +
           '<textarea class="msg" data-id="' + rep.id + '" data-stage="' + action.stage + '">' + msg + '</textarea>' +
         '</div>' +
@@ -461,18 +510,23 @@
     rows.forEach(function (rep) {
       var tr = document.createElement("tr");
       if (isConcluded(rep)) tr.className = "concluded";
-      var days = daysSince(rep.approved_at);
+      var sold = rep.vendas && rep.vendas.order_count > 0;
+      var days = bizDaysSince(rep.approved_at);
       var checklist = checklistFor(rep.id);
-      var pills = STAGES.map(function (st) {
+      var stagesForRow = sold ? ["venda"].concat(STAGES) : STAGES;
+      var pills = stagesForRow.map(function (st) {
         var entry = checklist[st] || { enviado: false };
-        var due = !entry.enviado && days >= THRESH[st] && !(st === "d3" && rep.vendas && rep.vendas.order_count > 0);
+        var naoAplica = (st === "d3" || st === "d7") && sold;
+        var due = st === "venda"
+          ? !entry.enviado
+          : !entry.enviado && !naoAplica && days >= THRESH[st];
         var cls = "pill";
         if (entry.enviado) cls += entry.auto ? " done auto" : " done";
         else if (due) cls += " due";
         var title = entry.enviado
           ? (entry.auto ? "Marcado automaticamente na criação da ferramenta" : "Enviada em " + fmtDate(entry.data))
-          : (st === "d3" && rep.vendas && rep.vendas.order_count > 0 ? "Não se aplica, já vendeu antes do reforço" : "Ainda não enviada");
-        return '<div class="' + cls + '" title="' + title + '" data-id="' + rep.id + '" data-stage="' + st + '">' + (entry.enviado ? "✓" : days >= THRESH[st] ? "!" : "") + '</div>';
+          : (naoAplica ? "Não se aplica, já vendeu (recebe o parabéns da venda)" : (st === "venda" ? "Ainda não recebeu o parabéns da primeira venda" : "Ainda não enviada"));
+        return '<div class="' + cls + '" title="' + title + '" data-id="' + rep.id + '" data-stage="' + st + '">' + (entry.enviado ? "✓" : due ? "!" : "") + '</div>';
       }).join("");
 
       tr.innerHTML =
@@ -504,94 +558,78 @@
     });
   }
 
-  // ---- persistence: checks.json is the only thing this page writes ----
+  // ---- migração única: joga o checks.json antigo (já com o histórico real
+  // de marcações) pra dentro do Firestore, na primeira vez que a página
+  // rodar com o backend novo. É seguro rodar mais de uma vez: só faz alguma
+  // coisa enquanto config/geral não tiver o campo migrated_at.
+  function runMigrationIfNeeded() {
+    return db.collection("config").doc("geral").get().then(function (doc) {
+      var data = doc.exists ? doc.data() : {};
+      if (data.migrated_at) return;
+      var seedEl = document.getElementById("checks-seed-data");
+      if (!seedEl) return;
+      var seed = JSON.parse(seedEl.textContent);
+      var batch = db.batch();
+      Object.keys(seed).forEach(function (id) {
+        if (id === "_config") return;
+        batch.set(db.collection("checks").doc(id), seed[id]);
+      });
+      var configUpdate = Object.assign({}, seed._config || {}, { migrated_at: new Date().toISOString() });
+      batch.set(db.collection("config").doc("geral"), configUpdate, { merge: true });
+      return batch.commit();
+    }).catch(function (e) { console.error("migração inicial falhou", e); });
+  }
 
-  function b64EncodeUtf8(str) {
-    return btoa(unescape(encodeURIComponent(str)));
-  }
-  function b64DecodeUtf8(str) {
-    return decodeURIComponent(escape(atob(str)));
-  }
+  // ---- persistence: Firestore, coleção "checks" (um doc por representante) ----
+  // e o doc único "config/geral" (guarda só o link do guia). Sem login: as
+  // regras do Firestore liberam leitura pra todo mundo e escrita só nos
+  // campos d0/d3/d7/d14/venda de cada representante.
 
   function loadChecks() {
-    return fetch("checks.json?t=" + Date.now(), { cache: "no-store" })
-      .then(function (r) { if (!r.ok) throw new Error("http " + r.status); return r.json(); })
-      .then(function (data) { CHECKS = data || {}; });
-  }
-
-  function fetchSha() {
-    return fetch(GH_API, {
-      headers: { "Authorization": "Bearer " + GH_TOKEN, "Accept": "application/vnd.github+json" },
-      cache: "no-store"
-    }).then(function (r) {
-      if (!r.ok) throw new Error("github get http " + r.status);
-      return r.json();
-    }).then(function (data) {
-      checksSha = data.sha;
-      return data;
+    return db.collection("checks").get().then(function (snap) {
+      var out = {};
+      snap.forEach(function (doc) { out[doc.id] = doc.data(); });
+      CHECKS = out;
+      return db.collection("config").doc("geral").get();
+    }).then(function (configDoc) {
+      CHECKS._config = configDoc.exists ? configDoc.data() : {};
     });
   }
 
-  var pending = false, retryQueued = false;
-  function persistChecks() {
-    if (pending) { retryQueued = true; return; }
-    pending = true;
+  function persistCheck(id, stage, value) {
     setSaveStatus("busy", "salvando...");
-    var content = JSON.stringify(CHECKS);
-    (checksSha ? Promise.resolve() : fetchSha()).then(function () {
-      return fetch(GH_API, {
-        method: "PUT",
-        headers: { "Authorization": "Bearer " + GH_TOKEN, "Accept": "application/vnd.github+json", "Content-Type": "application/json" },
-        body: JSON.stringify({
-          message: "checks: atualização via painel",
-          content: b64EncodeUtf8(content),
-          sha: checksSha
-        })
+    var update = {};
+    update[stage] = value;
+    db.collection("checks").doc(id).set(update, { merge: true })
+      .then(function () { setSaveStatus("ok", "salvo"); })
+      .catch(function (e) {
+        console.error("persist failed", e);
+        setSaveStatus("err", "erro ao salvar");
       });
-    }).then(function (r) {
-      if (r.status === 409) {
-        // someone else saved in between: refetch sha and retry once
-        checksSha = null;
-        return fetchSha().then(function () {
-          return fetch(GH_API, {
-            method: "PUT",
-            headers: { "Authorization": "Bearer " + GH_TOKEN, "Accept": "application/vnd.github+json", "Content-Type": "application/json" },
-            body: JSON.stringify({ message: "checks: atualização via painel", content: b64EncodeUtf8(content), sha: checksSha })
-          });
-        });
-      }
-      return r;
-    }).then(function (r) {
-      if (!r.ok) throw new Error("github put http " + r.status);
-      return r.json();
-    }).then(function (data) {
-      checksSha = data.content && data.content.sha;
-      setSaveStatus("ok", "salvo");
-    }).catch(function (e) {
-      console.error("persist failed", e);
-      setSaveStatus("err", "erro ao salvar");
-    }).finally(function () {
-      pending = false;
-      if (retryQueued) { retryQueued = false; persistChecks(); }
-    });
   }
 
   function markSent(id, stage) {
     CHECKS[id] = CHECKS[id] || {};
     CHECKS[id][stage] = { enviado: true, data: new Date().toISOString(), auto: false };
     render();
-    persistChecks();
+    persistCheck(id, stage, CHECKS[id][stage]);
   }
   function markUnsent(id, stage) {
     CHECKS[id] = CHECKS[id] || {};
     CHECKS[id][stage] = { enviado: false, data: null, auto: false };
     render();
-    persistChecks();
+    persistCheck(id, stage, CHECKS[id][stage]);
   }
   function saveGuiaUrl(url) {
     CHECKS._config = CHECKS._config || {};
     CHECKS._config.guia_url = url;
-    persistChecks();
+    setSaveStatus("busy", "salvando...");
+    db.collection("config").doc("geral").set({ guia_url: url }, { merge: true })
+      .then(function () { setSavedSoon(); })
+      .catch(function (e) {
+        console.error("persist failed", e);
+        setSaveStatus("err", "erro ao salvar");
+      });
     if (currentView === "hoje") renderHoje();
   }
 
@@ -610,21 +648,37 @@
     saveGuiaUrl(document.getElementById("guia-url").value.trim());
   });
 
-  // keep two open tabs (Bea + Vitória) roughly in sync without clobbering an in-progress edit
-  function poll() {
-    if (pending) return;
+  // mantém as duas abas (Bea + Vitória) em sincronia em tempo real, sem
+  // atropelar quem está no meio de uma edição na caixinha de mensagem
+  function applyRemoteChecksUpdate(fn) {
     if (document.activeElement && document.activeElement.tagName === "TEXTAREA") return;
-    loadChecks().then(render).catch(function () {});
+    fn();
+    render();
   }
-  setInterval(poll, 45000);
-  document.addEventListener("visibilitychange", function () {
-    if (!document.hidden) poll();
-  });
 
-  loadChecks()
-    .catch(function () { CHECKS = {}; })
+  function attachLiveSync() {
+    db.collection("checks").onSnapshot(function (snap) {
+      applyRemoteChecksUpdate(function () {
+        snap.docChanges().forEach(function (change) {
+          if (change.type === "removed") delete CHECKS[change.doc.id];
+          else CHECKS[change.doc.id] = change.doc.data();
+        });
+      });
+    }, function (e) { console.error("live sync (checks) failed", e); });
+
+    db.collection("config").doc("geral").onSnapshot(function (doc) {
+      applyRemoteChecksUpdate(function () {
+        CHECKS._config = doc.exists ? doc.data() : {};
+      });
+    }, function (e) { console.error("live sync (config) failed", e); });
+  }
+
+  runMigrationIfNeeded()
+    .then(loadChecks)
+    .catch(function (e) { console.error("carga inicial falhou", e); CHECKS = {}; })
     .then(render)
-    .then(function () { setSaveStatus("ok", "pronto"); });
+    .then(function () { setSaveStatus("ok", "pronto"); })
+    .then(attachLiveSync);
 })();
 </script>
 </body>
