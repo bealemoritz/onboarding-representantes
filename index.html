@@ -153,7 +153,6 @@
   .sales-cell .n { font-variant-numeric: tabular-nums; color: var(--ink); }
   .sales-cell .rs { font-family: var(--label-font); color: var(--muted); font-size: 11.5px; }
   .phone-warn { color: var(--critical); font-family: var(--label-font); font-size: 11px; font-weight: 500; }
-  footer.note { margin-top: 40px; font-size: 12px; color: var(--muted); line-height: 1.6; max-width: 70ch; }
 
   /* ---- aba "Como funciona o fluxo" ---- */
   .flow-intro { color: var(--muted); font-size: 14px; line-height: 1.5; max-width: none; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--rule); }
@@ -171,14 +170,14 @@
   .flow-node-h:focus-visible { outline: 2px solid var(--time); outline-offset: 2px; }
   .flow-node-h.flow-d0 { grid-column: 1; grid-row: 1 / 3; border-left-color: var(--representantes); }
   .flow-node-h.flow-d14 { grid-column: 5; grid-row: 1 / 3; border-left-color: var(--time); }
-  .flow-lane-venda, .flow-lane-dias { display: flex; flex-direction: column; align-self: center; }
+  .flow-lane-venda, .flow-lane-dias { display: flex; flex-direction: column; align-self: center; align-items: flex-start; }
   .flow-lane-venda { grid-column: 3; grid-row: 1; }
   .flow-lane-dias { grid-column: 3; grid-row: 2; }
   .flow-lane-label {
     font-family: var(--label-font); font-size: 10.5px; letter-spacing: .04em; text-transform: uppercase;
     margin-bottom: 8px;
   }
-  .flow-lane-venda .flow-lane-label { color: var(--good); }
+  .flow-lane-venda .flow-lane-label { color: var(--good); width: 220px; text-align: center; }
   .flow-lane-dias .flow-lane-label { color: var(--muted); }
   .flow-lane-dias-row { display: flex; align-items: center; gap: 14px; }
   .flow-node-h.flow-venda { border-left-color: var(--good); background: var(--good-soft); width: 220px; }
@@ -341,9 +340,9 @@
         </div>
 
         <div class="flow-node-h flow-d14" data-flow-toggle tabindex="0" role="button" aria-expanded="false">
-          <span class="flow-label">Dia 14 · sempre</span>
-          <strong>Segunda venda ou contato</strong>
-          <span class="flow-desc">Se já vendeu: incentivo pra próxima venda. Se ainda não vendeu: convite pra uma conversa de 5 minutos pra entender o que está travando.</span>
+          <span class="flow-label">Dia 14 · sempre, obrigatoriamente</span>
+          <strong>Fim do onboarding</strong>
+          <span class="flow-desc">Acontece no dia 14 sem falta, não importa se rolou uma segunda venda ou não antes disso. Se ela já vendeu (uma vez que seja) até lá: contamos o resultado e incentivamos a continuar. Se ainda não vendeu: convite pra uma conversa de 5 minutos pra entender o que está travando.</span>
           <span class="flow-hint">* clique para ver os modelos de mensagem</span>
           <div class="flow-preview">
             <div class="flow-preview-variant"><span class="flow-preview-tag">Se já vendeu</span><pre id="flow-preview-d14-sold"></pre></div>
@@ -352,10 +351,6 @@
         </div>
       </div>
     </div>
-
-    <footer class="note">
-      Dia 0 é a data de aprovação na Inbazz (quando ela recebe o guia e entra no grupo). Nome, cupom e vendas são sincronizados automaticamente todo dia. Marcações de "enviado" são feitas por vocês, direto aqui nessa página, e ficam salvas pra sempre — qualquer uma de vocês duas que abrir esse link vê a marcação da outra. Quadradinhos tracejados foram marcados automaticamente na criação da ferramenta, presumindo que o contato daquela etapa já tinha sido feito manualmente antes de ela existir. O telefone completo não aparece na tela — só os últimos 4 dígitos — mas é usado por trás dos panos pra montar o link do WhatsApp Web.
-    </footer>
   </div>
 </div>
 </div>
@@ -383,7 +378,7 @@
 
   var STAGES = ["d0", "d3", "d7", "d14"];
   var THRESH = { d0: 0, d3: 3, d7: 7, d14: 14 };
-  var STAGE_LABEL = { venda: "Parabéns · Primeira venda", d0: "Dia 0 · Boas-vindas", d3: "Dia 3 · Reforço", d7: "Dia 7 · Check-in", d14: "Dia 14 · Segunda venda ou contato" };
+  var STAGE_LABEL = { venda: "Parabéns · Primeira venda", d0: "Dia 0 · Boas-vindas", d3: "Dia 3 · Reforço", d7: "Dia 7 · Check-in", d14: "Dia 14 · Fim do onboarding" };
 
   var ROSTER_DATA = JSON.parse(document.getElementById("roster-data").textContent);
   var ROSTER = ROSTER_DATA.representantes || [];
@@ -831,9 +826,9 @@
   // representante fictícia — então nunca fica desatualizado em relação
   // às mensagens reais.
   function renderFlowPreviews() {
-    var demo = { nome: "Ana", cupom: "ANA10" };
-    var demoSold = { nome: "Ana", cupom: "ANA10", vendas: { order_count: 2 } };
-    var demoNoSold = { nome: "Ana", cupom: "ANA10", vendas: { order_count: 0 } };
+    var demo = { nome: "BEA", cupom: "BEA10" };
+    var demoSold = { nome: "BEA", cupom: "BEA10", vendas: { order_count: 2 } };
+    var demoNoSold = { nome: "BEA", cupom: "BEA10", vendas: { order_count: 0 } };
     var map = {
       "flow-preview-d0": messageFor("d0", demo),
       "flow-preview-venda": messageFor("venda", demo),
