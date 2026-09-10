@@ -81,9 +81,8 @@
   .cards { display: flex; flex-direction: column; gap: 12px; }
   .card {
     background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; padding: 18px 20px;
-    display: grid; grid-template-columns: 1fr auto; gap: 16px;
   }
-  .card-main { min-width: 0; }
+  .card-body { display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: stretch; }
   .card-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
   .card-name { font-family: var(--accent-font); font-size: 18px; font-weight: 700; color: var(--ink); }
   .badge { font-family: var(--label-font); font-size: 10.5px; font-weight: 500; letter-spacing: .04em; padding: 3px 9px; border-radius: 20px; text-transform: uppercase; }
@@ -111,7 +110,7 @@
     border-radius: 4px; padding: 12px 14px; color: var(--ink); font-family: var(--body-font); font-size: 13.5px; line-height: 1.55;
   }
   textarea.msg:focus { outline: 2px solid var(--time); outline-offset: 1px; }
-  .card-actions { display: flex; flex-direction: column; gap: 10px; align-items: stretch; min-width: 190px; }
+  .card-actions { display: flex; flex-direction: column; gap: 10px; align-items: stretch; justify-content: center; min-width: 190px; }
   .btn-wa {
     display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--time); color: var(--bg);
     border: 1px solid var(--time); border-radius: 4px; padding: 11px 16px; font-family: var(--label-font); font-weight: 500;
@@ -155,10 +154,41 @@
   .sales-cell .rs { font-family: var(--label-font); color: var(--muted); font-size: 11.5px; }
   .phone-warn { color: var(--critical); font-family: var(--label-font); font-size: 11px; font-weight: 500; }
   footer.note { margin-top: 40px; font-size: 12px; color: var(--muted); line-height: 1.6; max-width: 70ch; }
+
+  /* ---- aba "Como funciona o fluxo" ---- */
+  .flow-intro { color: var(--muted); font-size: 14px; line-height: 1.5; max-width: 62ch; margin-bottom: 28px; }
+  .flow-map { display: flex; flex-direction: column; align-items: stretch; gap: 0; max-width: 760px; }
+  .flow-arrow { text-align: center; color: var(--muted); font-size: 20px; line-height: 1; padding: 4px 0; }
+  .flow-node {
+    background: var(--paper); border: 1px solid var(--rule); border-left: 4px solid var(--rule);
+    border-radius: 6px; padding: 16px 18px; display: flex; flex-direction: column; gap: 4px;
+  }
+  .flow-label { font-family: var(--label-font); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+  .flow-node strong { font-family: var(--accent-font); font-size: 16px; font-weight: 700; color: var(--ink); }
+  .flow-desc { font-size: 13px; color: var(--muted); line-height: 1.5; margin-top: 2px; }
+  .flow-node.flow-d0 { border-left-color: var(--representantes); }
+  .flow-node.flow-venda { border-left-color: var(--good); background: var(--good-soft); }
+  .flow-node.flow-d3 { border-left-color: var(--warn); }
+  .flow-node.flow-d7 { border-left-color: var(--embaixadoras); }
+  .flow-node.flow-d14 { border-left-color: var(--time); }
+  .flow-branch {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start;
+    margin: 4px 0; padding: 16px; background: var(--bg); border: 1px dashed var(--rule); border-radius: 6px;
+  }
+  .flow-branch-col { display: flex; flex-direction: column; gap: 0; }
+  .flow-parallel-label {
+    font-family: var(--label-font); font-size: 10.5px; letter-spacing: .04em; text-transform: uppercase;
+    color: var(--good); margin-bottom: 8px;
+  }
+  .flow-spine-label {
+    font-family: var(--label-font); font-size: 10.5px; letter-spacing: .04em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 8px;
+  }
   @media (max-width: 640px) {
     .stats { grid-template-columns: repeat(2, 1fr); }
-    .card { grid-template-columns: 1fr; }
+    .card-body { grid-template-columns: 1fr; }
     .card-actions { min-width: 0; }
+    .flow-branch { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -171,7 +201,6 @@
     <div>
       <div class="brand-eyebrow">Le Moritz · Representantes</div>
       <h1>Onboarding + Ativação</h1>
-      <div class="sub">Quem precisa de mensagem hoje, o que mandar, e o histórico de cada representante do dia 0 ao dia 14.</div>
     </div>
     <div class="sync-status" id="sync-status">
       <span><span class="dot" id="save-dot"></span><span id="save-text">carregando...</span></span>
@@ -189,6 +218,7 @@
   <div class="tabs">
     <button class="tab active" data-view="hoje">Hoje <span class="count" id="tab-count-hoje">0</span></button>
     <button class="tab" data-view="todas">Todas as representantes <span class="count" id="tab-count-todas">0</span></button>
+    <button class="tab" data-view="fluxo">Como funciona o fluxo</button>
   </div>
 
   <div class="view active" id="view-hoje">
@@ -216,9 +246,56 @@
     </div>
   </div>
 
-  <footer class="note">
-    Dia 0 é a data de aprovação na Inbazz (quando ela recebe o guia e entra no grupo). Nome, cupom e vendas são sincronizados automaticamente todo dia. Marcações de "enviado" são feitas por vocês, direto aqui nessa página, e ficam salvas pra sempre — qualquer uma de vocês duas que abrir esse link vê a marcação da outra. Quadradinhos tracejados foram marcados automaticamente na criação da ferramenta, presumindo que o contato daquela etapa já tinha sido feito manualmente antes de ela existir. O telefone completo não aparece na tela — só os últimos 4 dígitos — mas é usado por trás dos panos pra montar o link do WhatsApp Web.
-  </footer>
+  <div class="view" id="view-fluxo">
+    <div class="flow-intro">O caminho que cada representante percorre, do dia da aprovação ao dia 14. As cores de cada etapa batem com as etiquetas dos cards na aba "Hoje".</div>
+
+    <div class="flow-map">
+      <div class="flow-node flow-d0">
+        <span class="flow-label">Dia 0 · sempre</span>
+        <strong>Boas-vindas</strong>
+        <span class="flow-desc">Enviada assim que ela é aprovada na Inbazz. Vai o guia em anexo e o convite pro grupo oficial.</span>
+      </div>
+
+      <div class="flow-arrow">↓</div>
+
+      <div class="flow-branch">
+        <div class="flow-branch-col">
+          <span class="flow-parallel-label">Em paralelo, a qualquer momento</span>
+          <div class="flow-node flow-venda">
+            <span class="flow-label">Assim que detectamos a venda</span>
+            <strong>Parabéns · Primeira venda</strong>
+            <span class="flow-desc">Passa na frente de tudo, não importa o dia do funil. Depois dela ser enviada, D3 e D7 saem da lista — só falta o dia 14.</span>
+          </div>
+        </div>
+        <div class="flow-branch-col">
+          <span class="flow-spine-label">Se ela ainda não vendeu</span>
+          <div class="flow-node flow-d3">
+            <span class="flow-label">Dia 3</span>
+            <strong>Reforço</strong>
+            <span class="flow-desc">Lembrete pra continuar falando com as 3 pessoas combinadas no dia 0.</span>
+          </div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-node flow-d7">
+            <span class="flow-label">Dia 7</span>
+            <strong>Check-in</strong>
+            <span class="flow-desc">Reforça que é normal a primeira venda demorar e oferece ajuda com quem abordar.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flow-arrow">↓</div>
+
+      <div class="flow-node flow-d14">
+        <span class="flow-label">Dia 14 · sempre</span>
+        <strong>Segunda venda ou contato</strong>
+        <span class="flow-desc">Se já vendeu: incentivo pra próxima venda. Se ainda não vendeu: convite pra uma conversa de 5 minutos pra entender o que está travando.</span>
+      </div>
+    </div>
+
+    <footer class="note">
+      Dia 0 é a data de aprovação na Inbazz (quando ela recebe o guia e entra no grupo). Nome, cupom e vendas são sincronizados automaticamente todo dia. Marcações de "enviado" são feitas por vocês, direto aqui nessa página, e ficam salvas pra sempre — qualquer uma de vocês duas que abrir esse link vê a marcação da outra. Quadradinhos tracejados foram marcados automaticamente na criação da ferramenta, presumindo que o contato daquela etapa já tinha sido feito manualmente antes de ela existir. O telefone completo não aparece na tela — só os últimos 4 dígitos — mas é usado por trás dos panos pra montar o link do WhatsApp Web.
+    </footer>
+  </div>
 </div>
 </div>
 
@@ -467,25 +544,25 @@
         : "Aprovada em " + fmtDate(rep.approved_at) + " · dia útil " + days + " do funil";
 
     card.innerHTML =
-      '<div class="card-main">' +
-        '<div class="card-top">' +
-          '<span class="card-name">' + escapeHtml(rep.nome) + '</span>' +
-          '<span class="badge stage stage-' + stage + '">' + STAGE_LABEL[stage] + '</span>' +
-          statusTag + soldTag + cupomFlag + phoneFlag +
-        '</div>' +
-        '<div class="meta-row">' +
-          '<span>@' + escapeHtml(rep.username || "") + '</span>' +
-          '<span class="mono">' + (rep.cupom ? escapeHtml(rep.cupom) : "—") + '</span>' +
-          '<span class="mono">' + maskPhone(rep.telefone_digits) + '</span>' +
-          '<span>' + dateInfo + '</span>' +
-        '</div>' +
-        '<textarea class="msg" data-id="' + rep.id + '" data-stage="' + stage + '">' + msg + '</textarea>' +
+      '<div class="card-top">' +
+        '<span class="card-name">' + escapeHtml(rep.nome) + '</span>' +
+        '<span class="badge stage stage-' + stage + '">' + STAGE_LABEL[stage] + '</span>' +
+        statusTag + soldTag + cupomFlag + phoneFlag +
       '</div>' +
-      '<div class="card-actions">' +
-        '<a class="btn-wa" href="' + (link || "#") + '" target="_blank" rel="noopener" aria-disabled="' + (link ? "false" : "true") + '">Abrir no WhatsApp Web</a>' +
-        '<label class="check-row' + (isDone ? " done" : "") + '" data-id="' + rep.id + '" data-stage="' + stage + '">' +
-          '<input type="checkbox"' + (isDone ? " checked" : "") + ' />' + (isDone ? "Enviada · desmarcar" : "Marcar como enviada") +
-        '</label>' +
+      '<div class="meta-row">' +
+        '<span>@' + escapeHtml(rep.username || "") + '</span>' +
+        '<span class="mono">' + (rep.cupom ? escapeHtml(rep.cupom) : "—") + '</span>' +
+        '<span class="mono">' + maskPhone(rep.telefone_digits) + '</span>' +
+        '<span>' + dateInfo + '</span>' +
+      '</div>' +
+      '<div class="card-body">' +
+        '<textarea class="msg" data-id="' + rep.id + '" data-stage="' + stage + '">' + msg + '</textarea>' +
+        '<div class="card-actions">' +
+          '<a class="btn-wa" href="' + (link || "#") + '" target="_blank" rel="noopener" aria-disabled="' + (link ? "false" : "true") + '">Abrir no WhatsApp Web</a>' +
+          '<label class="check-row' + (isDone ? " done" : "") + '" data-id="' + rep.id + '" data-stage="' + stage + '">' +
+            '<input type="checkbox"' + (isDone ? " checked" : "") + ' />' + (isDone ? "Enviada · desmarcar" : "Marcar como enviada") +
+          '</label>' +
+        '</div>' +
       '</div>';
     return card;
   }
