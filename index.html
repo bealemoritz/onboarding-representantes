@@ -156,39 +156,74 @@
   footer.note { margin-top: 40px; font-size: 12px; color: var(--muted); line-height: 1.6; max-width: 70ch; }
 
   /* ---- aba "Como funciona o fluxo" ---- */
-  .flow-intro { color: var(--muted); font-size: 14px; line-height: 1.5; max-width: 62ch; margin-bottom: 28px; }
-  .flow-map { display: flex; flex-direction: column; align-items: stretch; gap: 0; max-width: 760px; }
-  .flow-arrow { text-align: center; color: var(--muted); font-size: 20px; line-height: 1; padding: 4px 0; }
-  .flow-node {
+  .flow-intro { color: var(--muted); font-size: 14px; line-height: 1.5; max-width: none; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--rule); }
+  .flow-map-scroll { overflow-x: auto; padding-bottom: 8px; }
+  .flow-h {
+    display: grid; grid-template-columns: 200px 64px 460px 64px 200px; grid-template-rows: auto auto;
+    row-gap: 24px; align-items: stretch; min-width: 988px;
+  }
+  .flow-node-h {
     background: var(--paper); border: 1px solid var(--rule); border-left: 4px solid var(--rule);
-    border-radius: 6px; padding: 16px 18px; display: flex; flex-direction: column; gap: 4px;
+    border-radius: 6px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px;
+    cursor: pointer; align-self: center; transition: border-color .15s ease, box-shadow .15s ease;
   }
+  .flow-node-h:hover { border-color: var(--time); }
+  .flow-node-h:focus-visible { outline: 2px solid var(--time); outline-offset: 2px; }
+  .flow-node-h.flow-d0 { grid-column: 1; grid-row: 1 / 3; border-left-color: var(--representantes); }
+  .flow-node-h.flow-d14 { grid-column: 5; grid-row: 1 / 3; border-left-color: var(--time); }
+  .flow-lane-venda, .flow-lane-dias { display: flex; flex-direction: column; align-self: center; }
+  .flow-lane-venda { grid-column: 3; grid-row: 1; }
+  .flow-lane-dias { grid-column: 3; grid-row: 2; }
+  .flow-lane-label {
+    font-family: var(--label-font); font-size: 10.5px; letter-spacing: .04em; text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .flow-lane-venda .flow-lane-label { color: var(--good); }
+  .flow-lane-dias .flow-lane-label { color: var(--muted); }
+  .flow-lane-dias-row { display: flex; align-items: center; gap: 14px; }
+  .flow-node-h.flow-venda { border-left-color: var(--good); background: var(--good-soft); width: 220px; }
+  .flow-node-h.flow-d3 { border-left-color: var(--warn); width: 200px; }
+  .flow-node-h.flow-d7 { border-left-color: var(--embaixadoras); width: 200px; }
+  .flow-h-arrow { color: var(--muted); font-size: 18px; flex: 0 0 auto; }
   .flow-label { font-family: var(--label-font); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
-  .flow-node strong { font-family: var(--accent-font); font-size: 16px; font-weight: 700; color: var(--ink); }
-  .flow-desc { font-size: 13px; color: var(--muted); line-height: 1.5; margin-top: 2px; }
-  .flow-node.flow-d0 { border-left-color: var(--representantes); }
-  .flow-node.flow-venda { border-left-color: var(--good); background: var(--good-soft); }
-  .flow-node.flow-d3 { border-left-color: var(--warn); }
-  .flow-node.flow-d7 { border-left-color: var(--embaixadoras); }
-  .flow-node.flow-d14 { border-left-color: var(--time); }
-  .flow-branch {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start;
-    margin: 4px 0; padding: 16px; background: var(--bg); border: 1px dashed var(--rule); border-radius: 6px;
+  .flow-node-h strong { font-family: var(--accent-font); font-size: 15.5px; font-weight: 700; color: var(--ink); }
+  .flow-desc { font-size: 12.5px; color: var(--muted); line-height: 1.5; margin-top: 2px; }
+  .flow-hint { font-family: var(--label-font); font-size: 10px; letter-spacing: .02em; color: var(--time); margin-top: 6px; }
+  .flow-preview {
+    display: none; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--rule);
   }
-  .flow-branch-col { display: flex; flex-direction: column; gap: 0; }
-  .flow-parallel-label {
-    font-family: var(--label-font); font-size: 10.5px; letter-spacing: .04em; text-transform: uppercase;
-    color: var(--good); margin-bottom: 8px;
+  .flow-node-h.open .flow-preview { display: block; }
+  .flow-preview pre {
+    white-space: pre-wrap; font-family: var(--body-font); font-size: 12.5px; line-height: 1.5;
+    color: var(--ink); background: var(--bg); border: 1px solid var(--rule); border-radius: 4px;
+    padding: 10px 12px; margin: 0;
   }
-  .flow-spine-label {
-    font-family: var(--label-font); font-size: 10.5px; letter-spacing: .04em; text-transform: uppercase;
-    color: var(--muted); margin-bottom: 8px;
+  .flow-preview-tag { display: block; font-family: var(--label-font); font-size: 10px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin: 10px 0 4px; }
+  .flow-preview-variant:first-child .flow-preview-tag { margin-top: 0; }
+  /* fork (D0 -> duas lanes) e merge (duas lanes -> D14): linhas tracejadas em "T" */
+  .flow-fork, .flow-merge { position: relative; grid-row: 1 / 3; }
+  .flow-fork { grid-column: 2; }
+  .flow-merge { grid-column: 4; }
+  .flow-fork .fk-h, .flow-merge .fk-h { position: absolute; height: 0; border-top: 1.5px dashed var(--muted); }
+  .flow-fork .fk-v, .flow-merge .fk-v { position: absolute; left: 50%; top: 25%; bottom: 25%; width: 0; border-left: 1.5px dashed var(--muted); }
+  .flow-fork .fk-mid { top: 50%; left: 0; right: 50%; }
+  .flow-fork .fk-top { top: 25%; left: 50%; right: 0; }
+  .flow-fork .fk-bottom { top: 75%; left: 50%; right: 0; }
+  .flow-fork .fk-top::after, .flow-fork .fk-bottom::after {
+    content: ""; position: absolute; right: -1px; top: 50%; transform: translateY(-50%);
+    border-style: solid; border-width: 4px 0 4px 6px; border-color: transparent transparent transparent var(--muted);
+  }
+  .flow-merge .fk-top { top: 25%; left: 0; right: 50%; }
+  .flow-merge .fk-bottom { top: 75%; left: 0; right: 50%; }
+  .flow-merge .fk-mid { top: 50%; left: 50%; right: 0; }
+  .flow-merge .fk-mid::after {
+    content: ""; position: absolute; right: -1px; top: 50%; transform: translateY(-50%);
+    border-style: solid; border-width: 4px 0 4px 6px; border-color: transparent transparent transparent var(--muted);
   }
   @media (max-width: 640px) {
     .stats { grid-template-columns: repeat(2, 1fr); }
     .card-body { grid-template-columns: 1fr; }
     .card-actions { min-width: 0; }
-    .flow-branch { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -249,46 +284,72 @@
   <div class="view" id="view-fluxo">
     <div class="flow-intro">O caminho que cada representante percorre, do dia da aprovação ao dia 14. As cores de cada etapa batem com as etiquetas dos cards na aba "Hoje".</div>
 
-    <div class="flow-map">
-      <div class="flow-node flow-d0">
-        <span class="flow-label">Dia 0 · sempre</span>
-        <strong>Boas-vindas</strong>
-        <span class="flow-desc">Enviada assim que ela é aprovada na Inbazz. Vai o guia em anexo e o convite pro grupo oficial.</span>
-      </div>
+    <div class="flow-map-scroll">
+      <div class="flow-h">
+        <div class="flow-node-h flow-d0" data-flow-toggle tabindex="0" role="button" aria-expanded="false">
+          <span class="flow-label">Dia 0 · sempre</span>
+          <strong>Boas-vindas</strong>
+          <span class="flow-desc">Enviada assim que ela é aprovada na Inbazz. Vai o guia em anexo e o convite pro grupo oficial.</span>
+          <span class="flow-hint">* clique para ver o modelo de mensagem</span>
+          <div class="flow-preview"><pre id="flow-preview-d0"></pre></div>
+        </div>
 
-      <div class="flow-arrow">↓</div>
+        <div class="flow-fork" aria-hidden="true">
+          <span class="fk-h fk-mid"></span>
+          <span class="fk-v"></span>
+          <span class="fk-h fk-top"></span>
+          <span class="fk-h fk-bottom"></span>
+        </div>
 
-      <div class="flow-branch">
-        <div class="flow-branch-col">
-          <span class="flow-parallel-label">Em paralelo, a qualquer momento</span>
-          <div class="flow-node flow-venda">
+        <div class="flow-lane-venda">
+          <span class="flow-lane-label">Em paralelo, a qualquer momento</span>
+          <div class="flow-node-h flow-venda" data-flow-toggle tabindex="0" role="button" aria-expanded="false">
             <span class="flow-label">Assim que detectamos a venda</span>
             <strong>Parabéns · Primeira venda</strong>
             <span class="flow-desc">Passa na frente de tudo, não importa o dia do funil. Depois dela ser enviada, D3 e D7 saem da lista — só falta o dia 14.</span>
+            <span class="flow-hint">* clique para ver o modelo de mensagem</span>
+            <div class="flow-preview"><pre id="flow-preview-venda"></pre></div>
           </div>
         </div>
-        <div class="flow-branch-col">
-          <span class="flow-spine-label">Se ela ainda não vendeu</span>
-          <div class="flow-node flow-d3">
-            <span class="flow-label">Dia 3</span>
-            <strong>Reforço</strong>
-            <span class="flow-desc">Lembrete pra continuar falando com as 3 pessoas combinadas no dia 0.</span>
-          </div>
-          <div class="flow-arrow">↓</div>
-          <div class="flow-node flow-d7">
-            <span class="flow-label">Dia 7</span>
-            <strong>Check-in</strong>
-            <span class="flow-desc">Reforça que é normal a primeira venda demorar e oferece ajuda com quem abordar.</span>
+
+        <div class="flow-lane-dias">
+          <span class="flow-lane-label">Se ela ainda não vendeu</span>
+          <div class="flow-lane-dias-row">
+            <div class="flow-node-h flow-d3" data-flow-toggle tabindex="0" role="button" aria-expanded="false">
+              <span class="flow-label">Dia 3</span>
+              <strong>Reforço</strong>
+              <span class="flow-desc">Lembrete pra continuar falando com as 3 pessoas combinadas no dia 0.</span>
+              <span class="flow-hint">* clique para ver o modelo de mensagem</span>
+              <div class="flow-preview"><pre id="flow-preview-d3"></pre></div>
+            </div>
+            <span class="flow-h-arrow">→</span>
+            <div class="flow-node-h flow-d7" data-flow-toggle tabindex="0" role="button" aria-expanded="false">
+              <span class="flow-label">Dia 7</span>
+              <strong>Check-in</strong>
+              <span class="flow-desc">Reforça que é normal a primeira venda demorar e oferece ajuda com quem abordar.</span>
+              <span class="flow-hint">* clique para ver o modelo de mensagem</span>
+              <div class="flow-preview"><pre id="flow-preview-d7"></pre></div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="flow-arrow">↓</div>
+        <div class="flow-merge" aria-hidden="true">
+          <span class="fk-h fk-top"></span>
+          <span class="fk-h fk-bottom"></span>
+          <span class="fk-v"></span>
+          <span class="fk-h fk-mid"></span>
+        </div>
 
-      <div class="flow-node flow-d14">
-        <span class="flow-label">Dia 14 · sempre</span>
-        <strong>Segunda venda ou contato</strong>
-        <span class="flow-desc">Se já vendeu: incentivo pra próxima venda. Se ainda não vendeu: convite pra uma conversa de 5 minutos pra entender o que está travando.</span>
+        <div class="flow-node-h flow-d14" data-flow-toggle tabindex="0" role="button" aria-expanded="false">
+          <span class="flow-label">Dia 14 · sempre</span>
+          <strong>Segunda venda ou contato</strong>
+          <span class="flow-desc">Se já vendeu: incentivo pra próxima venda. Se ainda não vendeu: convite pra uma conversa de 5 minutos pra entender o que está travando.</span>
+          <span class="flow-hint">* clique para ver os modelos de mensagem</span>
+          <div class="flow-preview">
+            <div class="flow-preview-variant"><span class="flow-preview-tag">Se já vendeu</span><pre id="flow-preview-d14-sold"></pre></div>
+            <div class="flow-preview-variant"><span class="flow-preview-tag">Se ainda não vendeu</span><pre id="flow-preview-d14-nosold"></pre></div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -764,6 +825,40 @@
   });
   document.getElementById("search-todas").addEventListener("input", renderTodas);
   document.getElementById("toggle-concluidas").addEventListener("change", renderTodas);
+
+  // aba "Como funciona o fluxo": modelo de mensagem de cada etapa, gerado a
+  // partir da mesma messageFor() usada nos cards de verdade, com uma
+  // representante fictícia — então nunca fica desatualizado em relação
+  // às mensagens reais.
+  function renderFlowPreviews() {
+    var demo = { nome: "Ana", cupom: "ANA10" };
+    var demoSold = { nome: "Ana", cupom: "ANA10", vendas: { order_count: 2 } };
+    var demoNoSold = { nome: "Ana", cupom: "ANA10", vendas: { order_count: 0 } };
+    var map = {
+      "flow-preview-d0": messageFor("d0", demo),
+      "flow-preview-venda": messageFor("venda", demo),
+      "flow-preview-d3": messageFor("d3", demo),
+      "flow-preview-d7": messageFor("d7", demo),
+      "flow-preview-d14-sold": messageFor("d14", demoSold),
+      "flow-preview-d14-nosold": messageFor("d14", demoNoSold)
+    };
+    Object.keys(map).forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.textContent = map[id];
+    });
+  }
+  renderFlowPreviews();
+
+  document.querySelectorAll("[data-flow-toggle]").forEach(function (node) {
+    function toggle() {
+      var open = node.classList.toggle("open");
+      node.setAttribute("aria-expanded", open ? "true" : "false");
+    }
+    node.addEventListener("click", toggle);
+    node.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); }
+    });
+  });
 
   // mantém as duas abas (Bea + Vitória) em sincronia em tempo real, sem
   // atropelar quem está no meio de uma edição na caixinha de mensagem
